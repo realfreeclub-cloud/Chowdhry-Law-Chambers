@@ -129,13 +129,13 @@ export default function PageEditor({ id }: PageEditorProps) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Main Info */}
                 <div className="lg:col-span-2 space-y-6">
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200">
                         <div className="grid grid-cols-1 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-slate-700 mb-1">Page Title</label>
                                 <input
                                     type="text"
-                                    className="w-full p-2 border border-slate-300 rounded"
+                                    className="w-full p-3 md:p-2 border border-slate-300 rounded text-base"
                                     value={formData.title}
                                     onChange={e => setFormData({ ...formData, title: e.target.value })}
                                     required
@@ -145,7 +145,7 @@ export default function PageEditor({ id }: PageEditorProps) {
                                 <label className="block text-sm font-medium text-slate-700 mb-1">Slug (URL)</label>
                                 <input
                                     type="text"
-                                    className="w-full p-2 border border-slate-300 rounded font-mono text-sm"
+                                    className="w-full p-3 md:p-2 border border-slate-300 rounded font-mono text-sm"
                                     value={formData.slug}
                                     onChange={e => setFormData({ ...formData, slug: e.target.value })}
                                     required
@@ -163,33 +163,62 @@ export default function PageEditor({ id }: PageEditorProps) {
                     </div>
 
                     {/* Simple Section Manager */}
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                        <div className="flex justify-between items-center mb-4">
-                            <h2 className="text-xl font-bold">Content Sections</h2>
-                            <div className="flex gap-2">
-
-                                <button type="button" onClick={() => addSection('HERO_SLIDER')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Slider</button>
-                                <button type="button" onClick={() => addSection('SERVICES_GRID')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Services</button>
-                                <button type="button" onClick={() => addSection('ABOUT')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ About</button>
-                                <button type="button" onClick={() => addSection('STATS')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Stats</button>
-                                <button type="button" onClick={() => addSection('TESTIMONIALS')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Testimonials</button>
-                                <button type="button" onClick={() => addSection('BLOG')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Blog</button>
-                                <button type="button" onClick={() => addSection('CLIENT_LOGOS')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Client Logos</button>
-                                <button type="button" onClick={() => addSection('MAP')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Map</button>
-                                <button type="button" onClick={() => addSection('TEXT_BLOCK')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Text</button>
-                            </div>
+                    <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-200">
+                        <div className="mb-4">
+                            <h2 className="text-lg md:text-xl font-bold mb-2">Content Sections</h2>
+                            <p className="text-xs text-slate-500">Add sections to build your page</p>
                         </div>
 
-                        <div className="space-y-6">
+                        {/* Section Add Buttons - Mobile Optimized Grid */}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:flex lg:flex-wrap gap-2 mb-6">
+                            <button type="button" onClick={() => addSection('HERO_SLIDER')} className="flex items-center justify-center gap-1 text-xs md:text-sm bg-slate-100 px-3 py-2.5 md:py-2 rounded-lg hover:bg-slate-200 font-medium transition-colors">
+                                <span className="text-lg md:text-base">🎬</span>
+                                <span>Slider</span>
+                            </button>
+                            <button type="button" onClick={() => addSection('SERVICES_GRID')} className="flex items-center justify-center gap-1 text-xs md:text-sm bg-slate-100 px-3 py-2.5 md:py-2 rounded-lg hover:bg-slate-200 font-medium transition-colors">
+                                <span className="text-lg md:text-base">⚖️</span>
+                                <span>Services</span>
+                            </button>
+                            <button type="button" onClick={() => addSection('ABOUT')} className="flex items-center justify-center gap-1 text-xs md:text-sm bg-slate-100 px-3 py-2.5 md:py-2 rounded-lg hover:bg-slate-200 font-medium transition-colors">
+                                <span className="text-lg md:text-base">ℹ️</span>
+                                <span>About</span>
+                            </button>
+                            <button type="button" onClick={() => addSection('STATS')} className="flex items-center justify-center gap-1 text-xs md:text-sm bg-slate-100 px-3 py-2.5 md:py-2 rounded-lg hover:bg-slate-200 font-medium transition-colors">
+                                <span className="text-lg md:text-base">📊</span>
+                                <span>Stats</span>
+                            </button>
+                            <button type="button" onClick={() => addSection('TESTIMONIALS')} className="flex items-center justify-center gap-1 text-xs md:text-sm bg-slate-100 px-3 py-2.5 md:py-2 rounded-lg hover:bg-slate-200 font-medium transition-colors">
+                                <span className="text-lg md:text-base">💬</span>
+                                <span>Testimonials</span>
+                            </button>
+                            <button type="button" onClick={() => addSection('BLOG')} className="flex items-center justify-center gap-1 text-xs md:text-sm bg-slate-100 px-3 py-2.5 md:py-2 rounded-lg hover:bg-slate-200 font-medium transition-colors">
+                                <span className="text-lg md:text-base">📝</span>
+                                <span>Blog</span>
+                            </button>
+                            <button type="button" onClick={() => addSection('CLIENT_LOGOS')} className="flex items-center justify-center gap-1 text-xs md:text-sm bg-slate-100 px-3 py-2.5 md:py-2 rounded-lg hover:bg-slate-200 font-medium transition-colors">
+                                <span className="text-lg md:text-base">🏢</span>
+                                <span>Clients</span>
+                            </button>
+                            <button type="button" onClick={() => addSection('MAP')} className="flex items-center justify-center gap-1 text-xs md:text-sm bg-slate-100 px-3 py-2.5 md:py-2 rounded-lg hover:bg-slate-200 font-medium transition-colors">
+                                <span className="text-lg md:text-base">📍</span>
+                                <span>Map</span>
+                            </button>
+                            <button type="button" onClick={() => addSection('TEXT_BLOCK')} className="flex items-center justify-center gap-1 text-xs md:text-sm bg-slate-100 px-3 py-2.5 md:py-2 rounded-lg hover:bg-slate-200 font-medium transition-colors">
+                                <span className="text-lg md:text-base">📄</span>
+                                <span>Text</span>
+                            </button>
+                        </div>
+
+                        <div className="space-y-4">
                             {formData.sections.map((section, idx) => (
                                 <div key={idx} className="border border-slate-200 rounded-xl bg-white shadow-sm overflow-hidden transition-all hover:shadow-md">
                                     {/* Section Header */}
-                                    <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex justify-between items-center">
-                                        <div className="flex items-center gap-2">
-                                            <span className="bg-slate-200 text-slate-600 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+                                    <div className="bg-slate-50 px-3 md:px-4 py-3 border-b border-slate-200 flex justify-between items-center gap-2">
+                                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                                            <span className="bg-slate-200 text-slate-600 text-[10px] md:text-xs font-bold px-2 py-1 rounded uppercase tracking-wider whitespace-nowrap">
                                                 {section.type}
                                             </span>
-                                            <span className="text-xs text-slate-400">Order: {idx}</span>
+                                            <span className="text-xs text-slate-400 hidden sm:inline">Order: {idx}</span>
                                         </div>
                                         <div className="flex items-center gap-1">
                                             <button
@@ -201,7 +230,7 @@ export default function PageEditor({ id }: PageEditorProps) {
                                                     setFormData({ ...formData, sections: newSections });
                                                 }}
                                                 disabled={idx === 0}
-                                                className="p-1.5 text-slate-400 hover:text-slate-700 disabled:opacity-30 hover:bg-slate-200 rounded"
+                                                className="p-2 md:p-1.5 text-slate-400 hover:text-slate-700 disabled:opacity-30 hover:bg-slate-200 rounded min-w-[36px] md:min-w-0"
                                                 title="Move Up"
                                             >
                                                 ↑
@@ -215,7 +244,7 @@ export default function PageEditor({ id }: PageEditorProps) {
                                                     setFormData({ ...formData, sections: newSections });
                                                 }}
                                                 disabled={idx === formData.sections.length - 1}
-                                                className="p-1.5 text-slate-400 hover:text-slate-700 disabled:opacity-30 hover:bg-slate-200 rounded"
+                                                className="p-2 md:p-1.5 text-slate-400 hover:text-slate-700 disabled:opacity-30 hover:bg-slate-200 rounded min-w-[36px] md:min-w-0"
                                                 title="Move Down"
                                             >
                                                 ↓
@@ -224,7 +253,7 @@ export default function PageEditor({ id }: PageEditorProps) {
                                             <button
                                                 type="button"
                                                 onClick={() => removeSection(idx)}
-                                                className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded"
+                                                className="p-2 md:p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded min-w-[36px] md:min-w-0"
                                                 title="Remove Section"
                                             >
                                                 <Trash2 className="w-4 h-4" />
