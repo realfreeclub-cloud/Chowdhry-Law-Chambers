@@ -4,18 +4,58 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Save, Loader2, Image as ImageIcon, Eye, FileText, Trash2 } from "lucide-react";
 import Link from "next/link";
-import ReactMarkdown from "react-markdown";
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
+
+// Dynamically import ReactQuill to avoid SSR issues
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 interface EditorProps {
     id?: string;
 }
+
+// Quill toolbar configuration
+const quillModules = {
+    toolbar: [
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ font: [] }],
+        [{ size: [] }],
+        ["bold", "italic", "underline", "strike", "blockquote"],
+        [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+        ["link", "image", "video"],
+        [{ align: [] }],
+        [{ color: [] }, { background: [] }],
+        ["code-block"],
+        ["clean"],
+    ],
+};
+
+const quillFormats = [
+    "header",
+    "font",
+    "size",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+    "video",
+    "align",
+    "color",
+    "background",
+    "code-block",
+];
 
 export default function BlogEditor({ id }: EditorProps) {
     const isNew = !id || id === 'new';
     const router = useRouter();
     const [loading, setLoading] = useState(!isNew);
     const [saving, setSaving] = useState(false);
-    const [activeTab, setActiveTab] = useState<'write' | 'preview'>('write');
 
     // Gallery Modal State
     const [isGalleryOpen, setIsGalleryOpen] = useState(false);
@@ -98,44 +138,37 @@ export default function BlogEditor({ id }: EditorProps) {
         }
     };
 
-    // Auto-generate slug from title if slug is empty
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const title = e.target.value;
-        if (isNew && !formData.slug) {
-            const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-            setFormData(prev => ({ ...prev, title, slug }));
-        } else {
-            setFormData(prev => ({ ...prev, title }));
-        }
+        const newTitle = e.target.value;
+        setFormData(prev => ({
+            ...prev,
+            title: newTitle,
+            slug: prev.slug || newTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
+        }));
     };
 
     if (loading) return <div className="p-8">Loading...</div>;
 
     return (
-        <form onSubmit={handleSubmit} className="h-[calc(100vh-100px)] flex flex-col">
+        <form onSubmit={handleSubmit} className="h-full flex flex-col overflow-hidden">
             {/* Header */}
             <div className="flex justify-between items-center mb-6">
                 <div className="flex items-center space-x-4">
                     <Link href="/admin/blog" className="text-slate-500 hover:text-slate-900">
                         <ArrowLeft className="w-6 h-6" />
                     </Link>
-                    <h1 className="text-2xl font-bold text-slate-900">
+                    <h1 className="text-3xl font-bold text-slate-900">
                         {isNew ? "New Article" : "Edit Article"}
                     </h1>
                 </div>
-                <div className="flex items-center gap-3">
-                    <span className="text-sm text-slate-500">
-                        {formData.status === 'Published' ? 'Live' : 'Draft'}
-                    </span>
-                    <button
-                        type="submit"
-                        disabled={saving}
-                        className="flex items-center space-x-2 bg-slate-900 text-white px-6 py-2 rounded-lg hover:bg-slate-800 disabled:opacity-50"
-                    >
-                        {saving ? <Loader2 className="animate-spin w-4 h-4" /> : <Save className="w-4 h-4" />}
-                        <span>Save</span>
-                    </button>
-                </div>
+                <button
+                    type="submit"
+                    disabled={saving}
+                    className="flex items-center space-x-2 bg-slate-900 text-white px-6 py-2 rounded-lg hover:bg-slate-800 disabled:opacity-50"
+                >
+                    {saving ? <Loader2 className="animate-spin w-4 h-4" /> : <Save className="w-4 h-4" />}
+                    <span>Save</span>
+                </button>
             </div>
 
             <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-8 overflow-hidden h-full">
@@ -163,38 +196,33 @@ export default function BlogEditor({ id }: EditorProps) {
                         </div>
                     </div>
 
-                    {/* Editor */}
+                    {/* Rich Text Editor */}
                     <div className="bg-white rounded-xl shadow-sm border border-slate-200 flex-1 flex flex-col overflow-hidden">
-                        <div className="border-b border-slate-100 flex">
-                            <button
-                                type="button"
-                                onClick={() => setActiveTab('write')}
-                                className={`px-6 py-3 text-sm font-medium ${activeTab === 'write' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-500 hover:text-slate-800'}`}
-                            >
-                                Write
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() => setActiveTab('preview')}
-                                className={`px-6 py-3 text-sm font-medium ${activeTab === 'preview' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-500 hover:text-slate-800'}`}
-                            >
-                                Preview
-                            </button>
+                        <div className="border-b border-slate-100 px-6 py-3">
+                            <h3 className="font-semibold text-slate-900">Content</h3>
                         </div>
-                        <div className="flex-1 overflow-auto p-0 relative">
-                            {activeTab === 'write' ? (
-                                <textarea
-                                    className="w-full h-full p-6 resize-none border-none focus:ring-0 leading-relaxed font-mono text-sm"
-                                    placeholder="Write your article in Markdown..."
-                                    value={formData.content}
-                                    onChange={e => setFormData({ ...formData, content: e.target.value })}
-                                />
-                            ) : (
-                                <div className="prose prose-slate max-w-none p-6">
-                                    <ReactMarkdown>{formData.content}</ReactMarkdown>
-                                </div>
-                            )}
+                        <div className="flex-1 overflow-hidden">
+                            <ReactQuill
+                                theme="snow"
+                                value={formData.content}
+                                onChange={(value) => setFormData({ ...formData, content: value })}
+                                modules={quillModules}
+                                formats={quillFormats}
+                                className="h-full quill-editor"
+                                placeholder="Write your article content here..."
+                            />
                         </div>
+                    </div>
+
+                    {/* Excerpt */}
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Excerpt</label>
+                        <textarea
+                            value={formData.excerpt}
+                            onChange={e => setFormData({ ...formData, excerpt: e.target.value })}
+                            className="w-full p-3 border border-slate-300 rounded-lg text-sm h-24 resize-none"
+                            placeholder="Brief summary of the article..."
+                        />
                     </div>
                 </div>
 
@@ -250,35 +278,28 @@ export default function BlogEditor({ id }: EditorProps) {
                                 <span className="text-xs font-medium">Select Image</span>
                             </div>
                         )}
-                        <input
-                            type="text"
-                            placeholder="Or paste URL..."
-                            value={formData.featuredImage}
-                            onChange={e => setFormData({ ...formData, featuredImage: e.target.value })}
-                            className="w-full p-2 border border-slate-300 rounded-lg text-sm mt-2"
-                        />
+                        <button
+                            type="button"
+                            onClick={() => setIsGalleryOpen(true)}
+                            className="w-full mt-2 text-xs text-blue-600 hover:text-blue-700 font-medium"
+                        >
+                            {formData.featuredImage ? "Change Image" : "Browse Gallery"}
+                        </button>
                     </div>
 
-                    {/* Organization */}
+                    {/* Category & Tags */}
                     <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                        <h3 className="font-bold text-slate-900 mb-4">Organization</h3>
+                        <h3 className="font-bold text-slate-900 mb-4">Taxonomy</h3>
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Category</label>
                                 <input
                                     type="text"
-                                    list="categories"
                                     value={formData.category}
                                     onChange={e => setFormData({ ...formData, category: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
-                                    placeholder="e.g. Corporate Law"
+                                    className="w-full p-2 border border-slate-300 rounded-lg text-sm"
+                                    placeholder="e.g., Corporate Law"
                                 />
-                                <datalist id="categories">
-                                    <option value="Corporate Law" />
-                                    <option value="Family Law" />
-                                    <option value="Criminal Defense" />
-                                    <option value="General" />
-                                </datalist>
                             </div>
                             <div>
                                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Tags</label>
@@ -286,25 +307,26 @@ export default function BlogEditor({ id }: EditorProps) {
                                     type="text"
                                     value={formData.tags}
                                     onChange={e => setFormData({ ...formData, tags: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
-                                    placeholder="Separated by commas"
+                                    className="w-full p-2 border border-slate-300 rounded-lg text-sm"
+                                    placeholder="tag1, tag2, tag3"
                                 />
+                                <p className="text-xs text-slate-400 mt-1">Separate with commas</p>
                             </div>
                             <div>
-                                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Excerpt</label>
-                                <textarea
-                                    value={formData.excerpt}
-                                    onChange={e => setFormData({ ...formData, excerpt: e.target.value })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg h-20 text-sm"
-                                    placeholder="Short summary..."
+                                <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Author</label>
+                                <input
+                                    type="text"
+                                    value={formData.author}
+                                    onChange={e => setFormData({ ...formData, author: e.target.value })}
+                                    className="w-full p-2 border border-slate-300 rounded-lg text-sm"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    {/* SEO */}
+                    {/* SEO Settings */}
                     <div className="bg-white p-5 rounded-xl shadow-sm border border-slate-200">
-                        <h3 className="font-bold text-slate-900 mb-4">SEO Settings</h3>
+                        <h3 className="font-bold text-slate-900 mb-4">SEO</h3>
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-xs font-semibold text-slate-500 uppercase mb-1">Meta Title</label>
@@ -312,8 +334,8 @@ export default function BlogEditor({ id }: EditorProps) {
                                     type="text"
                                     value={formData.seo.metaTitle}
                                     onChange={e => setFormData({ ...formData, seo: { ...formData.seo, metaTitle: e.target.value } })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
-                                    placeholder="Leave empty to use Title"
+                                    className="w-full p-2 border border-slate-300 rounded-lg text-sm"
+                                    placeholder="SEO title"
                                 />
                             </div>
                             <div>
@@ -321,8 +343,8 @@ export default function BlogEditor({ id }: EditorProps) {
                                 <textarea
                                     value={formData.seo.metaDesc}
                                     onChange={e => setFormData({ ...formData, seo: { ...formData.seo, metaDesc: e.target.value } })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg h-24 text-sm"
-                                    placeholder="Search engine summary..."
+                                    className="w-full p-2 border border-slate-300 rounded-lg text-sm h-20 resize-none"
+                                    placeholder="SEO description"
                                 />
                             </div>
                             <div>
@@ -331,7 +353,8 @@ export default function BlogEditor({ id }: EditorProps) {
                                     type="text"
                                     value={formData.seo.focusKeyword}
                                     onChange={e => setFormData({ ...formData, seo: { ...formData.seo, focusKeyword: e.target.value } })}
-                                    className="w-full p-2 border border-slate-300 rounded-lg"
+                                    className="w-full p-2 border border-slate-300 rounded-lg text-sm"
+                                    placeholder="Primary keyword"
                                 />
                             </div>
                         </div>
@@ -339,33 +362,73 @@ export default function BlogEditor({ id }: EditorProps) {
                 </div>
             </div>
 
-            {/* Gallery Picker Modal */}
+            {/* Gallery Modal */}
             {isGalleryOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col m-4">
-                        <div className="flex justify-between items-center p-6 border-b border-slate-100">
-                            <h2 className="text-xl font-bold text-slate-900">Select Image</h2>
-                            <button onClick={() => setIsGalleryOpen(false)} className="px-4 py-2 text-sm">Close</button>
+                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-xl max-w-4xl w-full max-h-[80vh] overflow-hidden flex flex-col">
+                        <div className="p-6 border-b border-slate-200 flex justify-between items-center">
+                            <h2 className="text-xl font-bold">Select Image</h2>
+                            <button
+                                type="button"
+                                onClick={() => setIsGalleryOpen(false)}
+                                className="text-slate-400 hover:text-slate-600"
+                            >
+                                ✕
+                            </button>
                         </div>
-                        <div className="flex-1 overflow-y-auto p-6 bg-slate-50">
-                            <div className="grid grid-cols-5 gap-4">
+                        <div className="p-6 overflow-y-auto">
+                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 {galleryImages.map((img) => (
-                                    <button
+                                    <div
                                         key={img._id}
                                         onClick={() => {
                                             setFormData({ ...formData, featuredImage: img.url });
                                             setIsGalleryOpen(false);
                                         }}
-                                        className="relative aspect-square rounded-lg overflow-hidden border-2 border-transparent hover:border-blue-500 group"
+                                        className="relative aspect-square rounded-lg overflow-hidden border-2 border-slate-200 hover:border-blue-500 cursor-pointer transition group"
                                     >
                                         <img src={img.url} alt={img.title} className="w-full h-full object-cover" />
-                                    </button>
+                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition flex items-center justify-center">
+                                            <span className="text-white opacity-0 group-hover:opacity-100 font-medium">Select</span>
+                                        </div>
+                                    </div>
                                 ))}
                             </div>
                         </div>
                     </div>
                 </div>
             )}
+
+            <style jsx global>{`
+                .quill-editor {
+                    display: flex;
+                    flex-direction: column;
+                }
+                .quill-editor .ql-container {
+                    flex: 1;
+                    overflow-y: auto;
+                    font-size: 16px;
+                    font-family: inherit;
+                }
+                .quill-editor .ql-editor {
+                    min-height: 300px;
+                    padding: 20px;
+                }
+                .quill-editor .ql-editor.ql-blank::before {
+                    color: #cbd5e1;
+                    font-style: normal;
+                }
+                .ql-toolbar {
+                    border-top: none !important;
+                    border-left: none !important;
+                    border-right: none !important;
+                    border-bottom: 1px solid #e2e8f0 !important;
+                    background: #f8fafc;
+                }
+                .ql-container {
+                    border: none !important;
+                }
+            `}</style>
         </form>
     );
 }

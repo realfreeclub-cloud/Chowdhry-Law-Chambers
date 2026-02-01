@@ -56,7 +56,7 @@ export default function MapSectionEditable({ data }: MapSectionProps) {
                             {buttonText}
                         </a>
                     </div>
-                    <div className="flex-1 h-[400px] bg-slate-200 relative">
+                    <div className="w-full md:flex-1 h-[300px] md:h-[400px] bg-slate-200 relative order-first md:order-last">
                         <iframe
                             src={url}
                             width="100%"
@@ -65,7 +65,8 @@ export default function MapSectionEditable({ data }: MapSectionProps) {
                             allowFullScreen
                             loading="lazy"
                             referrerPolicy="no-referrer-when-downgrade"
-                            className="absolute inset-0"
+                            className="w-full h-full"
+                            title="Location Map"
                         />
                     </div>
                 </div>
