@@ -13,7 +13,8 @@ import {
     BriefcaseIcon,
     UserCheck,
     Calendar,
-    Newspaper
+    Newspaper,
+    X
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 
@@ -57,13 +58,23 @@ const navGroups = [
     }
 ];
 
-export default function Sidebar() {
+interface SidebarProps {
+    isOpen: boolean;
+    onClose: () => void;
+}
+
+export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     const pathname = usePathname();
 
     return (
-        <aside className="w-72 bg-slate-900 text-white flex flex-col h-full flex-shrink-0 border-r border-slate-800">
+        <aside className={`
+            fixed lg:static inset-y-0 left-0 z-50
+            w-72 bg-slate-900 text-white flex flex-col h-full flex-shrink-0 border-r border-slate-800
+            transform transition-transform duration-300 ease-in-out
+            ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}>
             {/* Logo Area */}
-            <div className="p-6 border-b border-white/5 bg-slate-950/50">
+            <div className="p-6 border-b border-white/5 bg-slate-950/50 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded bg-gradient-to-br from-[var(--secondary)] to-yellow-600 flex items-center justify-center font-serif font-bold text-white text-lg shadow-lg shadow-yellow-900/20">
                         L
@@ -73,6 +84,14 @@ export default function Sidebar() {
                         <p className="text-[10px] text-slate-400 font-medium tracking-wider uppercase">Admin Panel</p>
                     </div>
                 </div>
+                {/* Close button for mobile */}
+                <button
+                    onClick={onClose}
+                    className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+                    aria-label="Close menu"
+                >
+                    <X className="w-5 h-5" />
+                </button>
             </div>
 
             {/* Navigation */}
@@ -90,6 +109,7 @@ export default function Sidebar() {
                                     <Link
                                         key={item.href}
                                         href={item.href}
+                                        onClick={onClose}
                                         className={`group flex items-center h-10 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
                                             ? "bg-[var(--secondary)] text-white shadow-md shadow-yellow-900/20"
                                             : "text-slate-400 hover:bg-white/5 hover:text-white"
@@ -124,8 +144,6 @@ export default function Sidebar() {
                     Sign Out
                 </button>
             </div>
-
-
         </aside>
     );
 }

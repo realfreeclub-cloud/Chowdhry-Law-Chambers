@@ -2,10 +2,10 @@ import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-    throw new Error(
-        'Please define the MONGODB_URI environment variable inside .env'
-    );
+// Only enforce MONGODB_URI at runtime, not during build
+// This prevents build failures when env vars aren't available
+if (!MONGODB_URI && typeof window === 'undefined' && process.env.NODE_ENV !== 'production') {
+    console.warn('Warning: MONGODB_URI not defined. Database operations will fail.');
 }
 
 /**
@@ -31,6 +31,13 @@ if (!cached) {
 }
 
 async function connectDB() {
+    // Runtime check for MONGODB_URI
+    if (!MONGODB_URI) {
+        throw new Error(
+            'MONGODB_URI is not defined. Please add it to your environment variables.'
+        );
+    }
+
     if (!cached) {
         cached = global.mongoose = { conn: null, promise: null };
     }
@@ -44,7 +51,7 @@ async function connectDB() {
             bufferCommands: false,
         };
 
-        cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {
+        cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
             return mongoose;
         });
     }

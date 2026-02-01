@@ -173,6 +173,9 @@ export default function PageEditor({ id }: PageEditorProps) {
                                 <button type="button" onClick={() => addSection('ABOUT')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ About</button>
                                 <button type="button" onClick={() => addSection('STATS')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Stats</button>
                                 <button type="button" onClick={() => addSection('TESTIMONIALS')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Testimonials</button>
+                                <button type="button" onClick={() => addSection('BLOG')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Blog</button>
+                                <button type="button" onClick={() => addSection('CLIENT_LOGOS')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Client Logos</button>
+                                <button type="button" onClick={() => addSection('MAP')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Map</button>
                                 <button type="button" onClick={() => addSection('TEXT_BLOCK')} className="text-xs bg-slate-100 p-1 rounded hover:bg-slate-200">+ Text</button>
                             </div>
                         </div>

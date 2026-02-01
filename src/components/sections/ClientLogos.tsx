@@ -11,9 +11,17 @@ interface Client {
 interface ClientLogosProps {
     title?: string;
     subtitle?: string;
+    data?: {
+        title?: string;
+        subtitle?: string;
+    };
 }
 
-export default function ClientLogos({ title = "What Our Clients Say", subtitle = "Testimonials" }: ClientLogosProps) {
+export default function ClientLogos({ title, subtitle, data }: ClientLogosProps) {
+    // Support both direct props and data object for section system compatibility
+    const sectionTitle = data?.title || title || "What Our Clients Say";
+    const sectionSubtitle = data?.subtitle || subtitle || "Testimonials";
+
     const [clients, setClients] = useState<Client[]>([]);
 
     useEffect(() => {
@@ -31,8 +39,8 @@ export default function ClientLogos({ title = "What Our Clients Say", subtitle =
     return (
         <section className="py-20 bg-white overflow-hidden">
             <div className="container mx-auto px-4 mb-12 text-center">
-                <p className="text-xs font-bold text-[var(--secondary)] uppercase tracking-[0.2em] mb-4">{subtitle}</p>
-                <h2 className="text-4xl md:text-5xl font-serif text-slate-900 mb-6">{title}</h2>
+                <p className="text-xs font-bold text-[var(--secondary)] uppercase tracking-[0.2em] mb-4">{sectionSubtitle}</p>
+                <h2 className="text-4xl md:text-5xl font-serif text-slate-900 mb-6">{sectionTitle}</h2>
                 <div className="w-24 h-1 bg-[var(--secondary)] mx-auto rounded-full"></div>
             </div>
 
