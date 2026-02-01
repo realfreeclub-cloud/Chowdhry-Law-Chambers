@@ -6,7 +6,7 @@ interface ServicesFormProps {
 }
 
 export default function ServicesForm({ content, onChange }: ServicesFormProps) {
-    const handleChange = (field: string, value: string) => {
+    const handleChange = (field: string, value: string | number) => {
         onChange({ ...content, [field]: value });
     };
 
