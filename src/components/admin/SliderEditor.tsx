@@ -112,6 +112,47 @@ export default function SliderEditor({ id }: EditorProps) {
                         />
                     </div>
                     <div>
+                        <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
+                        <textarea
+                            value={formData.description || ""}
+                            onChange={e => setFormData({ ...formData, description: e.target.value })}
+                            className="w-full p-2 border border-slate-300 rounded h-24"
+                            placeholder="Enter description text..."
+                        />
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Title Size</label>
+                            <input
+                                type="text"
+                                value={formData.titleFontSize || "5rem"}
+                                onChange={e => setFormData({ ...formData, titleFontSize: e.target.value })}
+                                className="w-full p-2 border border-slate-300 rounded"
+                                placeholder="e.g. 5rem"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Subtitle Size</label>
+                            <input
+                                type="text"
+                                value={formData.subtitleFontSize || "0.875rem"}
+                                onChange={e => setFormData({ ...formData, subtitleFontSize: e.target.value })}
+                                className="w-full p-2 border border-slate-300 rounded"
+                                placeholder="e.g. 0.875rem"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-slate-700 mb-1">Desc. Size</label>
+                            <input
+                                type="text"
+                                value={formData.descFontSize || "1.125rem"}
+                                onChange={e => setFormData({ ...formData, descFontSize: e.target.value })}
+                                className="w-full p-2 border border-slate-300 rounded"
+                                placeholder="e.g. 1.125rem"
+                            />
+                        </div>
+                    </div>
+                    <div>
                         <label className="block text-sm font-medium text-slate-700 mb-1">Image URL</label>
                         <input
                             type="text"
