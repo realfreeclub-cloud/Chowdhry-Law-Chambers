@@ -115,22 +115,42 @@ export default function FirmSettings() {
     ];
 
     return (
-        <div>
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-3xl font-bold text-slate-900">Settings</h1>
+        <div className="pb-6">
+            {/* Header - Responsive */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+                <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Settings</h1>
                 <button
                     onClick={handleSave}
                     disabled={saving}
-                    className="flex items-center space-x-2 bg-slate-900 text-white px-6 py-2 rounded-lg hover:bg-slate-800 disabled:opacity-50"
+                    className="flex items-center space-x-2 bg-slate-900 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-slate-800 disabled:opacity-50 text-sm sm:text-base w-full sm:w-auto justify-center"
                 >
                     {saving ? <Loader2 className="animate-spin w-4 h-4" /> : <Save className="w-4 h-4" />}
                     <span>Save Changes</span>
                 </button>
             </div>
 
+            {/* Mobile Tabs - Horizontal Scroll */}
+            <div className="lg:hidden mb-6 -mx-4 px-4 overflow-x-auto">
+                <div className="flex gap-2 min-w-max pb-2">
+                    {tabs.map(tab => (
+                        <button
+                            key={tab.id}
+                            onClick={() => setActiveTab(tab.id)}
+                            className={`flex items-center space-x-2 px-4 py-2.5 rounded-lg font-medium transition-colors whitespace-nowrap ${activeTab === tab.id
+                                ? "bg-slate-900 text-white"
+                                : "bg-white text-slate-600 hover:bg-slate-100 border border-slate-200"
+                                }`}
+                        >
+                            <tab.icon className="w-4 h-4" />
+                            <span className="text-sm">{tab.label}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             <div className="flex gap-6">
-                {/* Sidebar Config Header */}
-                <div className="w-64 flex-shrink-0 space-y-2">
+                {/* Desktop Sidebar - Hidden on Mobile */}
+                <div className="hidden lg:block w-64 flex-shrink-0 space-y-2">
                     {tabs.map(tab => (
                         <button
                             key={tab.id}
@@ -146,13 +166,13 @@ export default function FirmSettings() {
                     ))}
                 </div>
 
-                <div className="flex-1 space-y-6">
+                <div className="flex-1 space-y-6 min-w-0">
 
                     {/* General Tab */}
                     {activeTab === "general" && (
                         <>
-                            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                                <h2 className="text-xl font-bold text-slate-900 mb-4">Firm Info</h2>
+                            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                                <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-4">Firm Info</h2>
                                 <div className="space-y-4">
                                     <div>
                                         <label className="block text-sm font-medium text-slate-700 mb-1">Firm Name</label>
@@ -160,18 +180,18 @@ export default function FirmSettings() {
                                             type="text"
                                             value={config.name}
                                             onChange={e => setConfig({ ...config, name: e.target.value })}
-                                            className="w-full p-3 border border-slate-300 rounded-lg"
+                                            className="w-full p-2.5 sm:p-3 border border-slate-300 rounded-lg text-sm sm:text-base"
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-slate-700 mb-1">Company Logo</label>
-                                        <div className="flex items-center gap-4">
+                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                                             {config.logoUrl && (
                                                 <div className="bg-slate-100 p-2 rounded border border-slate-200">
-                                                    <img src={config.logoUrl} alt="Logo Preview" className="h-12 object-contain" />
+                                                    <img src={config.logoUrl} alt="Logo Preview" className="h-10 sm:h-12 object-contain" />
                                                 </div>
                                             )}
-                                            <button onClick={() => setIsGalleryOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 text-sm font-medium text-slate-700">
+                                            <button onClick={() => setIsGalleryOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 text-sm font-medium text-slate-700 w-full sm:w-auto justify-center">
                                                 <ImageIcon className="w-4 h-4" /> Select
                                             </button>
                                         </div>
@@ -179,11 +199,11 @@ export default function FirmSettings() {
                                 </div>
                             </div>
 
-                            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                                <h2 className="text-xl font-bold text-slate-900 mb-4">Header & Footer</h2>
+                            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                                <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-4">Header & Footer</h2>
                                 <div className="space-y-4">
-                                    <h3 className="font-semibold text-slate-700">Top Bar</h3>
-                                    <div className="flex items-center gap-4">
+                                    <h3 className="font-semibold text-slate-700 text-sm sm:text-base">Top Bar</h3>
+                                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                                         <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
                                             <input type="checkbox" checked={config.header?.showTopBar} onChange={e => setConfig({ ...config, header: { ...config.header, showTopBar: e.target.checked } })} className="rounded border-slate-300 text-slate-900" />
                                             Show Top Bar
@@ -197,13 +217,13 @@ export default function FirmSettings() {
                                         type="text"
                                         value={config.header?.workingHours}
                                         onChange={e => setConfig({ ...config, header: { ...config.header, workingHours: e.target.value } })}
-                                        className="w-full p-3 border border-slate-300 rounded-lg"
+                                        className="w-full p-2.5 sm:p-3 border border-slate-300 rounded-lg text-sm sm:text-base"
                                         placeholder="Working Hours Text"
                                     />
 
                                     <div className="h-px bg-slate-100 my-4" />
 
-                                    <h3 className="font-semibold text-slate-700">Footer</h3>
+                                    <h3 className="font-semibold text-slate-700 text-sm sm:text-base">Footer</h3>
                                     <label className="flex items-center gap-2 text-sm text-slate-600 cursor-pointer mb-2">
                                         <input type="checkbox" checked={config.footer?.showSocialMedia} onChange={e => setConfig({ ...config, footer: { ...config.footer, showSocialMedia: e.target.checked } })} className="rounded border-slate-300 text-slate-900" />
                                         Show Socials
@@ -211,13 +231,13 @@ export default function FirmSettings() {
                                     <textarea
                                         value={config.footer?.description}
                                         onChange={e => setConfig({ ...config, footer: { ...config.footer, description: e.target.value } })}
-                                        className="w-full p-3 border border-slate-300 rounded-lg h-24"
+                                        className="w-full p-2.5 sm:p-3 border border-slate-300 rounded-lg h-20 sm:h-24 text-sm sm:text-base"
                                         placeholder="Footer description text"
                                     />
 
                                     <div className="h-px bg-slate-100 my-4" />
 
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-sm font-medium text-slate-700 mb-1">Header Logo Height (px)</label>
                                             <input
@@ -233,10 +253,10 @@ export default function FirmSettings() {
                                                         header: { ...config.header, logoHeight: val ? `${val}px` : "" }
                                                     });
                                                 }}
-                                                className="w-full p-3 border border-slate-300 rounded-lg"
-                                                placeholder="e.g. 50"
+                                                className="w-full p-2.5 sm:p-3 border border-slate-300 rounded-lg text-sm sm:text-base"
+                                                placeholder="e.g. 100"
                                             />
-                                            <p className="text-xs text-slate-500 mt-1">Enter height in pixels (e.g. 50)</p>
+                                            <p className="text-xs text-slate-500 mt-1">Enter height in pixels (e.g. 100)</p>
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-slate-700 mb-1">Footer Logo Height (px)</label>
@@ -250,10 +270,10 @@ export default function FirmSettings() {
                                                         footer: { ...config.footer, logoHeight: val ? `${val}px` : "" }
                                                     });
                                                 }}
-                                                className="w-full p-3 border border-slate-300 rounded-lg"
-                                                placeholder="e.g. 50"
+                                                className="w-full p-2.5 sm:p-3 border border-slate-300 rounded-lg text-sm sm:text-base"
+                                                placeholder="e.g. 100"
                                             />
-                                            <p className="text-xs text-slate-500 mt-1">Enter height in pixels (e.g. 50)</p>
+                                            <p className="text-xs text-slate-500 mt-1">Enter height in pixels (e.g. 100)</p>
                                         </div>
                                     </div>
                                     <div className="mt-2">
@@ -274,10 +294,10 @@ export default function FirmSettings() {
 
                     {/* Appearance Tab */}
                     {activeTab === "appearance" && (
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                            <h2 className="text-xl font-bold text-slate-900 mb-6">Theme Settings</h2>
+                        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                            <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-4 sm:mb-6">Theme Settings</h2>
 
-                            <div className="grid grid-cols-3 gap-4 mb-8">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
                                 <button
                                     onClick={() => handleThemePreset('corporate')}
                                     className={`p-4 rounded-xl border-2 text-left transition-all ${config.theme.preset === 'corporate' ? 'border-slate-900 bg-slate-50' : 'border-slate-200 hover:border-slate-300'}`}
@@ -301,7 +321,7 @@ export default function FirmSettings() {
                                 </button>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                 <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-2">Primary Color</label>
                                     <div className="flex gap-2">
@@ -368,28 +388,28 @@ export default function FirmSettings() {
 
                     {/* Contact Tab */}
                     {activeTab === "contact" && (
-                        <div className="space-y-6">
-                            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                                <h2 className="text-xl font-bold text-slate-900 mb-4">Contact Info</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <input type="email" value={config.contact.email} onChange={e => setConfig({ ...config, contact: { ...config.contact, email: e.target.value } })} placeholder="Email" className="p-3 border rounded-lg" />
-                                    <input type="tel" value={config.contact.phone} onChange={e => setConfig({ ...config, contact: { ...config.contact, phone: e.target.value } })} placeholder="Phone" className="p-3 border rounded-lg" />
-                                    <input type="text" value={config.contact.address} onChange={e => setConfig({ ...config, contact: { ...config.contact, address: e.target.value } })} placeholder="Address" className="p-3 border rounded-lg md:col-span-2" />
+                        <div className="space-y-4 sm:space-y-6">
+                            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                                <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-4">Contact Info</h2>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                    <input type="email" value={config.contact.email} onChange={e => setConfig({ ...config, contact: { ...config.contact, email: e.target.value } })} placeholder="Email" className="p-2.5 sm:p-3 border rounded-lg text-sm sm:text-base" />
+                                    <input type="tel" value={config.contact.phone} onChange={e => setConfig({ ...config, contact: { ...config.contact, phone: e.target.value } })} placeholder="Phone" className="p-2.5 sm:p-3 border rounded-lg text-sm sm:text-base" />
+                                    <input type="text" value={config.contact.address} onChange={e => setConfig({ ...config, contact: { ...config.contact, address: e.target.value } })} placeholder="Address" className="p-2.5 sm:p-3 border rounded-lg sm:col-span-2 text-sm sm:text-base" />
                                 </div>
                             </div>
 
-                            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                                <h2 className="text-xl font-bold text-slate-900 mb-4">Social Media</h2>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <input type="url" value={config.socialMedia.facebook} onChange={e => setConfig({ ...config, socialMedia: { ...config.socialMedia, facebook: e.target.value } })} placeholder="Facebook URL" className="p-3 border rounded-lg" />
-                                    <input type="url" value={config.socialMedia.twitter} onChange={e => setConfig({ ...config, socialMedia: { ...config.socialMedia, twitter: e.target.value } })} placeholder="Twitter URL" className="p-3 border rounded-lg" />
-                                    <input type="url" value={config.socialMedia.linkedin} onChange={e => setConfig({ ...config, socialMedia: { ...config.socialMedia, linkedin: e.target.value } })} placeholder="LinkedIn URL" className="p-3 border rounded-lg" />
-                                    <input type="url" value={config.socialMedia.instagram} onChange={e => setConfig({ ...config, socialMedia: { ...config.socialMedia, instagram: e.target.value } })} placeholder="Instagram URL" className="p-3 border rounded-lg" />
+                            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                                <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-4">Social Media</h2>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                                    <input type="url" value={config.socialMedia.facebook} onChange={e => setConfig({ ...config, socialMedia: { ...config.socialMedia, facebook: e.target.value } })} placeholder="Facebook URL" className="p-2.5 sm:p-3 border rounded-lg text-sm sm:text-base" />
+                                    <input type="url" value={config.socialMedia.twitter} onChange={e => setConfig({ ...config, socialMedia: { ...config.socialMedia, twitter: e.target.value } })} placeholder="Twitter URL" className="p-2.5 sm:p-3 border rounded-lg text-sm sm:text-base" />
+                                    <input type="url" value={config.socialMedia.linkedin} onChange={e => setConfig({ ...config, socialMedia: { ...config.socialMedia, linkedin: e.target.value } })} placeholder="LinkedIn URL" className="p-2.5 sm:p-3 border rounded-lg text-sm sm:text-base" />
+                                    <input type="url" value={config.socialMedia.instagram} onChange={e => setConfig({ ...config, socialMedia: { ...config.socialMedia, instagram: e.target.value } })} placeholder="Instagram URL" className="p-2.5 sm:p-3 border rounded-lg text-sm sm:text-base" />
                                 </div>
                             </div>
 
-                            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                                <h2 className="text-xl font-bold text-slate-900 mb-4">Maps</h2>
+                            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                                <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-4">Maps</h2>
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-2">
                                         <input
@@ -415,7 +435,7 @@ export default function FirmSettings() {
                                             }
                                             setConfig({ ...config, contact: { ...config.contact, mapUrl: val } });
                                         }}
-                                        className="w-full p-3 border border-slate-300 rounded-lg"
+                                        className="w-full p-2.5 sm:p-3 border border-slate-300 rounded-lg text-sm sm:text-base"
                                         placeholder="Paste the full iframe code or just the URL"
                                     />
                                     <p className="text-xs text-slate-500">You can paste the full Google Maps <code>&lt;iframe&gt;</code> code here, and we'll extract the link for you.</p>
@@ -426,25 +446,25 @@ export default function FirmSettings() {
 
                     {/* Menu Tab */}
                     {activeTab === "menu" && (
-                        <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
-                            <h2 className="text-xl font-bold text-slate-900 mb-4">Navigation Menu</h2>
-                            <div className="space-y-2">
+                        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-slate-200">
+                            <h2 className="text-lg sm:text-xl font-bold text-slate-900 mb-4">Navigation Menu</h2>
+                            <div className="space-y-3">
                                 {config.menu.map((item, idx) => (
-                                    <div key={idx} className="flex gap-2">
+                                    <div key={idx} className="flex flex-col sm:flex-row gap-2">
                                         <input value={item.label} onChange={e => {
                                             const newMenu = [...config.menu];
                                             newMenu[idx].label = e.target.value;
                                             setConfig({ ...config, menu: newMenu });
-                                        }} className="flex-1 p-2 border rounded" placeholder="Label" />
+                                        }} className="flex-1 p-2.5 border rounded text-sm sm:text-base" placeholder="Label" />
                                         <input value={item.href} onChange={e => {
                                             const newMenu = [...config.menu];
                                             newMenu[idx].href = e.target.value;
                                             setConfig({ ...config, menu: newMenu });
-                                        }} className="flex-1 p-2 border rounded" placeholder="URL" />
+                                        }} className="flex-1 p-2.5 border rounded text-sm sm:text-base" placeholder="URL" />
                                         <button onClick={() => {
                                             const newMenu = config.menu.filter((_, i) => i !== idx);
                                             setConfig({ ...config, menu: newMenu });
-                                        }} className="p-2 text-red-500 hover:bg-red-50 rounded"><Trash2 className="w-4 h-4" /></button>
+                                        }} className="p-2.5 text-red-500 hover:bg-red-50 rounded self-start sm:self-auto"><Trash2 className="w-4 h-4" /></button>
                                     </div>
                                 ))}
                                 <button onClick={() => setConfig({ ...config, menu: [...config.menu, { label: "", href: "", order: config.menu.length }] })} className="text-sm text-blue-600 font-medium flex items-center gap-1 mt-2">
@@ -456,18 +476,18 @@ export default function FirmSettings() {
                 </div>
             </div>
 
-            {/* Gallery Picker (Same as before) */}
+            {/* Gallery Picker - Responsive */}
             {isGalleryOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl h-[80vh] flex flex-col m-4">
-                        <div className="flex justify-between items-center p-6 border-b border-slate-100">
-                            <h2 className="text-xl font-bold text-slate-900">Select Image</h2>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+                    <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[85vh] flex flex-col">
+                        <div className="flex justify-between items-center p-4 sm:p-6 border-b border-slate-100">
+                            <h2 className="text-lg sm:text-xl font-bold text-slate-900">Select Image</h2>
                             <button onClick={() => setIsGalleryOpen(false)} className="text-slate-400 hover:text-slate-600">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
-                        <div className="flex-1 overflow-y-auto p-6 bg-slate-50">
-                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-slate-50">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
                                 {galleryImages.map((img) => (
                                     <button
                                         key={img._id}
