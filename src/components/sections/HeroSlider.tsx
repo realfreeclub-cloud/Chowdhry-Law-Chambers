@@ -17,11 +17,13 @@ interface ISlider {
     descFontSize?: string;
 }
 
-export default function HeroSlider() {
-    const [sliders, setSliders] = useState<ISlider[]>([]);
+export default function HeroSlider({ initialSliders = [] }: { initialSliders?: any[] }) {
+    const [sliders, setSliders] = useState<ISlider[]>(initialSliders);
     const [current, setCurrent] = useState(0);
 
     useEffect(() => {
+        if (initialSliders.length > 0) return;
+
         fetch("/api/sliders")
             .then(res => res.json())
             .then(data => {

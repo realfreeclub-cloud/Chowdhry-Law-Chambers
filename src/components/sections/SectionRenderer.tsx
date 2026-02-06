@@ -10,7 +10,7 @@ import BlogSection from "./BlogSection";
 import ClientLogos from "./ClientLogos";
 import MapSectionEditable from "./MapSectionEditable";
 
-export default function SectionRenderer({ section }: { section: any }) {
+export default function SectionRenderer({ section, sliders }: { section: any, sliders?: any[] }) {
     // Parsing content if it's a string (back compatibility) or Object
     const content = typeof section.content === 'string'
         ? JSON.parse(section.content)
@@ -20,7 +20,7 @@ export default function SectionRenderer({ section }: { section: any }) {
         case 'HERO':
             return <Hero data={content} />;
         case 'HERO_SLIDER':
-            return <HeroSlider />;
+            return <HeroSlider initialSliders={sliders} />;
         case 'SERVICES_GRID':
             return <ServicesGrid data={content} />;
         case 'ABOUT':

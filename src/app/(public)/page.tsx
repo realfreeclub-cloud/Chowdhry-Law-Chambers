@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import connectDB from "@/lib/db";
-import { Page, SiteConfig } from "@/models";
+import { Page, SiteConfig, Slider } from "@/models";
 import SectionRenderer from "@/components/sections/SectionRenderer";
 import MapSection from "@/components/MapSection";
 import ClientLogos from "@/components/sections/ClientLogos";
@@ -12,6 +12,7 @@ export default async function HomePage() {
   await connectDB();
   const page = await Page.findOne({ slug: "home", isPublished: true }).lean();
   const config = await SiteConfig.findOne().lean();
+  const sliders = await Slider.find({ isActive: true }).sort({ order: 1 }).lean();
 
   if (!page) {
     return (
@@ -26,7 +27,7 @@ export default async function HomePage() {
   return (
     <main>
       {sections.map((section: any, idx: number) => (
-        <SectionRenderer key={idx} section={section} />
+        <SectionRenderer key={idx} section={section} sliders={JSON.parse(JSON.stringify(sliders))} />
       ))}
 
       <ClientLogos
