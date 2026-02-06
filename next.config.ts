@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   output: "standalone",
+  async rewrites() {
+    return [
+      {
+        source: '/uploads/:path*',
+        destination: '/api/uploads/:path*',
+      },
+    ];
+  },
 };
 
 export default nextConfig;
