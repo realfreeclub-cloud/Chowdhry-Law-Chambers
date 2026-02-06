@@ -15,7 +15,7 @@ services:
       - NEXTAUTH_URL=${NEXTAUTH_URL}
       - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
     volumes:
-      - ./uploads:/app/public/uploads
+      - ./public/uploads:/app/public/uploads
     networks:
       - app-network
 
