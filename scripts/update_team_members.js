@@ -38,8 +38,69 @@ His practice encompasses a wide spectrum of litigation and advisory work, includ
 *   **Former Member, Committee on Mediation, Arbitration and Conciliation, PHD Chamber of Commerce and Industry**
 *   **Co-Chair, Law and Justice Committee, PHD Chamber of Commerce and Industry**`,
         order: 1
+    },
+    {
+        fullName: 'R. K. Pandey',
+        role: 'Advocate | Senior Partner',
+        experience: '28+ Years',
+        imageUrl: '',
+        bio: `With over 28 years of active legal practice, R. K. Pandey is a vital and respected member of the Chambers. He began his legal journey in 1988 and has been educated in Allahabad and Delhi, completing his B.A. (Hons.) from Jamia Millia Islamia and his law degree from Kanpur.
+
+Mr. Pandey has practiced extensively across all Delhi District Courts and the High Court of Delhi. He has successfully argued several landmark matters, securing significant reliefs for clients, and is widely regarded for his practical insight, courtcraft, and reliability in complex litigation.`,
+        order: 2
+    },
+    {
+        fullName: 'Varun Verma',
+        role: 'Advocate | Partner',
+        experience: 'Experienced',
+        imageUrl: '',
+        bio: `Varun Verma completed his schooling in Delhi, graduated in B.Com. (Hons.), and obtained his law degree from Amity Law School, Noida. He practices before the Delhi District Courts, the High Court of Delhi, and the Supreme Court of India.
+
+His practice also extends to specialized tribunals including the NGT, CAT, Armed Forces Tribunal, and various District Courts in cities such as Patna and Pune. He primarily specializes in Matrimonial and Civil Disputes, combining detailed preparation with a client-focused litigation strategy.`,
+        order: 3
+    },
+    {
+        fullName: 'Pushaan Singh Gullia',
+        role: 'Advocate | Partner',
+        experience: 'Experienced',
+        imageUrl: '',
+        bio: `Pushaan Singh Gullia completed his schooling from Mayo College, Ajmer, pursued English Literature at the University of Delhi, and earned his law degree from O.P. Jindal Global Law School.
+
+He regularly appears before all Delhi District Courts, the High Court of Delhi, and the Supreme Court of India, along with tribunals including CAT, NCLT (Delhi & Mumbai), DRT, NCLAT, and DRAT. He specializes in Property and Criminal Disputes and is known for his structured advocacy and sharp legal analysis.`,
+        order: 4
+    },
+    {
+        fullName: 'Jyoti Das',
+        role: 'Advocate | Partner',
+        experience: '5+ Years',
+        imageUrl: '',
+        bio: `Jyoti Das completed her schooling in Delhi and obtained her law degree from Amity Law School. With over five years of experience, she has been actively practicing across Delhi courts.
+
+Her work reflects strong procedural knowledge, diligent case preparation, and a committed approach to client representation, making her a valuable member of the Chambers.`,
+        order: 5
+    },
+    {
+        fullName: 'Mohd. Anwar Aman',
+        role: 'Advocate | Partner',
+        experience: '5+ Years',
+        imageUrl: '',
+        bio: `Mohd. Anwar Aman completed his schooling in Delhi and pursued his B.A. LL.B. (Hons.) from Haryana, followed by an LL.M. from Haryana. Early in his career, he worked as a Legal Researcher at the Hon’ble High Court of Delhi, gaining valuable exposure to judicial reasoning, constitutional interpretation, and court-driven legal analysis.
+
+With over five years of active litigation experience, Mr. Aman has practiced extensively before all Delhi District Courts and the High Court of Delhi. His background in legal research, combined with hands-on courtroom practice, enables him to approach matters with strong doctrinal clarity, procedural precision, and practical advocacy.
+
+As a Partner at the Chambers, he plays a key role in litigation strategy, drafting, and court appearances, contributing to the firm’s research-driven and solution-oriented legal practice.`,
+        order: 6
+    },
+    {
+        fullName: 'Kshitij Singh',
+        role: 'Advocate | Partner',
+        experience: 'Experienced',
+        imageUrl: '',
+        bio: `Kshitij Singh completed his schooling from Air Force Bal Bharati School, Delhi, and obtained his B.A. LL.B. degree from University School of Law and Legal Studies (USLLS), Guru Gobind Singh Indraprastha University, Delhi.
+
+He regularly practices before the High Court of Delhi, the Supreme Court of India, and various Delhi District Courts. As a Partner at the Chambers, Mr. Singh is actively involved in court appearances, drafting, and litigation strategy, contributing to the firm’s comprehensive and courtroom-focused practice.`,
+        order: 7
     }
-    // Add more members here as needed
 ];
 
 async function updateTeamMembers() {
