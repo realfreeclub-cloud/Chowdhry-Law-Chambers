@@ -4,6 +4,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { getSiteConfig } from "@/lib/config";
 
+// Force dynamic rendering (fix build DB connection)
+export const dynamic = "force-dynamic";
+
 // Serif Font for Headings
 const playfair = Playfair_Display({
   subsets: ["latin"],

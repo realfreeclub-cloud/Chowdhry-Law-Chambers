@@ -11,27 +11,14 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - MONGODB_URI=mongodb://mongo:27017/law-firm
-      - NEXTAUTH_URL=http://your-vps-ip:3000
-      - NEXTAUTH_SECRET=changeme
-      - mongo
+      - MONGODB_URI=${MONGODB_URI}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
     volumes:
       - ./uploads:/app/public/uploads
-    networks:
-      - app-network
-
-  mongo:
-    container_name: law-firm-db
-    image: mongo:latest
-    restart: always
-    volumes:
-      - mongo-data:/data/db
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  mongo-data:

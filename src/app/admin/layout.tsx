@@ -5,6 +5,8 @@ import { usePathname } from "next/navigation";
 import Sidebar from "@/components/admin/Sidebar";
 import TopBar from "@/components/admin/TopBar";
 
+export const dynamic = "force-dynamic";
+
 export default function AdminLayout({
     children,
 }: {
