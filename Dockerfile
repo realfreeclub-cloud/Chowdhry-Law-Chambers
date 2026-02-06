@@ -23,7 +23,7 @@ COPY . .
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 # Dummy MONGODB_URI for build time only (validation)
-ENV MONGODB_URI="mongodb+srv://dishashrivastava591_db_user:MghCdxAMAEnnVa1x@cluster0.lzi1la6.mongodb.net/?appName=Cluster0"
+ENV MONGODB_URI="mongodb+srv://dishashrivastava591_db_user:MghCdxAMAEnnVa1x@cluster0.lzi1la6.mongodb.net/law-firm?appName=Cluster0"
 
 RUN npm run build
 
