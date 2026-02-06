@@ -14,8 +14,9 @@ services:
       - MONGODB_URI=mongodb://mongo:27017/law-firm
       - NEXTAUTH_URL=http://your-vps-ip:3000
       - NEXTAUTH_SECRET=changeme
-    depends_on:
       - mongo
+    volumes:
+      - ./uploads:/app/public/uploads
     networks:
       - app-network
 
