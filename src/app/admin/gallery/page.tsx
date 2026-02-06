@@ -151,11 +151,12 @@ export default function GalleryPage() {
                                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                     <button
                                         onClick={() => {
-                                            navigator.clipboard.writeText(img.url);
-                                            alert("URL Copied!");
+                                            const fullUrl = window.location.origin + img.url;
+                                            navigator.clipboard.writeText(fullUrl);
+                                            alert("✅ Full URL copied: " + fullUrl);
                                         }}
                                         className="p-2 bg-white text-slate-900 rounded-full hover:bg-slate-100 transition"
-                                        title="Copy URL"
+                                        title="Copy Full URL"
                                     >
                                         <Copy className="w-4 h-4" />
                                     </button>
