@@ -384,8 +384,12 @@ We focus on clear legal advice, strong documentation, and effective representati
                     order: 1,
                     content: {
                         subtitle: 'ABOUT US',
-                        title: 'Premium Legal Services in India',
-                        description: 'We are a premier law firm based in New Delhi, dedicated to providing top-tier legal representation across the Supreme Court and High Courts of India.',
+                        title: 'Chowdhry Law Chambers',
+                        description: `Established in 1986, Chowdhry Law Chambers is a full-service litigation law firm based in Delhi, with a legacy spanning nearly four decades and three generations of legal practice. Since its inception, the Chambers has remained deeply rooted in courtroom advocacy while continuously evolving to meet the demands of modern litigation.
+
+The firm operates through chambers at the Saket District Court and Tis Hazari District Court, along with offices at Badarpur, Delhi and Bengali Market, New Delhi, the latter serving as the firm’s principal office. From these bases, the Chambers handles litigation across India and selectively represents clients in matters involving international and cross-border elements.
+
+Chowdhry Law Chambers maintains a robust litigation practice across Civil, Criminal, Commercial, and Constitutional domains. The firm regularly appears before the Supreme Court of India, the High Court of Delhi, various Delhi District Courts, and specialized tribunals including NGT, CAT, AFT, NCLT/NCLAT, and DRT/DRAT. Its practice also extends to the High Court of Madhya Pradesh, courts across Mumbai and Maharashtra, and trial courts and High Courts throughout India.`,
                         mainImage: 'https://images.unsplash.com/photo-1556157382-97eda2d6229b?auto=format&fit=crop&q=80',
                         groupImage: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80',
                         quote: 'Satyamev Jayate - Truth alone triumphs. We fight for the truth and your rights.',

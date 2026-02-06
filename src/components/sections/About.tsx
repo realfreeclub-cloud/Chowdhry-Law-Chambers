@@ -55,7 +55,7 @@ export default function About({ data }: { data: any }) {
                             <h2 className="text-4xl md:text-6xl font-serif font-medium text-[#111] leading-tight mb-6">
                                 {data.title || "We’re Advocates for Justice and Right"}
                             </h2>
-                            <p className="text-gray-600 text-lg leading-relaxed">
+                            <p className="text-gray-600 text-lg leading-relaxed whitespace-pre-line">
                                 {data.description || "We are dedicated advocates for justice and your legal rights. Our mission is to provide strong representation for individuals and businesses facing legal challenges."}
                             </p>
                         </div>

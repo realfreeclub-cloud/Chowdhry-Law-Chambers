@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: law-firm-web
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongo:27017/law-firm
+      - NEXTAUTH_URL=http://your-vps-ip:3000
+      - NEXTAUTH_SECRET=changeme
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    container_name: law-firm-db
+    image: mongo:latest
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mongo-data:
