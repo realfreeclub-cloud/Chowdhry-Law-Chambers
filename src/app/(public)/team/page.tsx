@@ -80,18 +80,24 @@ export default async function TeamPage() {
                                     )}
                                 </div>
 
-                                {/* Social / Contact */}
-                                <div className="border-t border-slate-100 pt-4 flex space-x-4 relative z-10">
-                                    {member.email && (
-                                        <a href={`mailto:${member.email}`} className="text-slate-400 hover:text-[var(--secondary)] transition-colors">
-                                            <Mail className="w-5 h-5" />
-                                        </a>
-                                    )}
-                                    {member.linkedinUrl && (
-                                        <a href={member.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-[#0077b5] transition-colors">
-                                            <Linkedin className="w-5 h-5" />
-                                        </a>
-                                    )}
+                                {/* Social / Contact & View Profile */}
+                                <div className="border-t border-slate-100 pt-4 flex justify-between items-center relative z-10">
+                                    <div className="flex space-x-4">
+                                        {member.email && (
+                                            <a href={`mailto:${member.email}`} className="text-slate-400 hover:text-[var(--secondary)] transition-colors">
+                                                <Mail className="w-5 h-5" />
+                                            </a>
+                                        )}
+                                        {member.linkedinUrl && (
+                                            <a href={member.linkedinUrl} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-[#0077b5] transition-colors">
+                                                <Linkedin className="w-5 h-5" />
+                                            </a>
+                                        )}
+                                    </div>
+                                    <span className="text-[var(--secondary)] font-bold text-sm flex items-center group-hover:translate-x-1 transition-transform">
+                                        View Profile
+                                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+                                    </span>
                                 </div>
                             </div>
                         </div>
