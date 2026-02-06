@@ -20,6 +20,16 @@ export default async function TeamPage() {
                 </p>
             </section>
 
+            {/* Team Structure & Philosophy */}
+            <section className="py-16 px-4 max-w-5xl mx-auto text-center">
+                <h2 className="text-3xl font-bold font-[var(--font-heading)] mb-6 text-slate-900">
+                    Team & Working Structure
+                </h2>
+                <p className="text-lg text-slate-600 leading-relaxed">
+                    Chowdhry Law Chambers is supported by a team of 15 legal professionals, operating under a structured and mentor-driven model. Senior advocates personally supervise matters, ensuring strategic oversight, procedural precision, and consistent quality of advocacy. The firm places strong emphasis on research-driven litigation, grooming juniors through hands-on court exposure and rigorous legal analysis.
+                </p>
+            </section>
+
             {/* Grid */}
             <section className="py-20 px-4 max-w-7xl mx-auto">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
