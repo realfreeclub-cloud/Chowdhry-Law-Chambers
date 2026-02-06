@@ -23,7 +23,7 @@ export default async function PracticeAreasPage() {
             <section className="bg-[var(--primary)] py-20 text-white text-center px-4">
                 <h1 className="text-4xl md:text-5xl font-bold font-[var(--font-heading)] mb-4">Practice Areas</h1>
                 <p className="text-lg text-slate-300 max-w-2xl mx-auto">
-                    Comprehensive legal solutions tailored to your unique needs. We are dedicated to providing exceptional representation across a wide spectrum of legal matters.
+                    The Chambers offers comprehensive representation in:
                 </p>
             </section>
 
@@ -48,6 +48,14 @@ export default async function PracticeAreasPage() {
                             </span>
                         </Link>
                     ))}
+                </div>
+
+                {/* Clients & Work Profile */}
+                <div className="mt-20 border-t pt-12">
+                    <h2 className="text-3xl font-bold text-slate-900 mb-6 font-[var(--font-heading)] text-center">Clients & Work Profile</h2>
+                    <p className="text-lg text-slate-600 leading-relaxed max-w-4xl mx-auto text-center">
+                        The firm represents a diverse clientele including individuals, families, societies, MSMEs, startups, established corporates, pharmaceutical companies, and government bodies/PSUs. In addition to domestic matters, the Chambers advises and represents NRIs and international clients in India-related disputes.
+                    </p>
                 </div>
             </section>
         </main>

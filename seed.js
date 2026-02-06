@@ -164,75 +164,108 @@ async function seed() {
         // --- Practice Areas ---
         const practiceAreas = [
             {
-                title: 'Corporate Law',
-                slug: 'corporate-law',
-                shortDescription: 'Comprehensive legal solutions for businesses of all sizes.',
-                fullDescription: '# Corporate Law\n\nWe provide expert guidance on mergers, acquisitions, and corporate governance.',
-                imageUrl: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80',
-                icon: 'Briefcase',
+                title: 'Civil Litigation',
+                slug: 'civil-litigation',
+                shortDescription: 'Expert legal representation in Civil Litigation.',
+                fullDescription: '# Civil Litigation\n\nWe provide comprehensive legal services in Civil Litigation.',
+                icon: 'Scale',
                 order: 1,
             },
             {
-                title: 'Family Law',
-                slug: 'family-law',
-                shortDescription: 'Compassionate support for navigating family legal matters.',
-                fullDescription: '# Family Law\n\nOur team is dedicated to helping families resolve disputes with care and understanding.',
-                imageUrl: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80',
-                icon: 'Users',
+                title: 'Criminal Litigation',
+                slug: 'criminal-litigation',
+                shortDescription: 'Expert legal representation in Criminal Litigation.',
+                fullDescription: '# Criminal Litigation\n\nWe provide comprehensive legal services in Criminal Litigation.',
+                icon: 'Gavel',
                 order: 2,
             },
             {
-                title: 'Real Estate',
-                slug: 'real-estate',
-                shortDescription: 'Expert advice for commercial and residential property transactions.',
-                fullDescription: '# Real Estate Law\n\nFrom closing deals to resolving disputes, we handle all aspects of real estate law.',
-                imageUrl: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&q=80',
-                icon: 'Home',
+                title: 'Matrimonial & Family Law',
+                slug: 'matrimonial-family-law',
+                shortDescription: 'Expert legal representation in Matrimonial & Family Law.',
+                fullDescription: '# Matrimonial & Family Law\n\nWe provide comprehensive legal services in Matrimonial & Family Law.',
+                icon: 'Users',
                 order: 3,
             },
             {
-                title: 'Criminal Defense',
-                slug: 'criminal-defense',
-                shortDescription: 'Aggressive representation for those facing criminal charges.',
-                fullDescription: '# Criminal Defense\n\nWe protect your rights and freedom with zealous advocacy.',
-                imageUrl: 'https://images.unsplash.com/photo-1589994965851-a8f479c573a9?auto=format&fit=crop&q=80',
-                icon: 'Shield',
+                title: 'Property & Land Disputes',
+                slug: 'property-land-disputes',
+                shortDescription: 'Expert legal representation in Property & Land Disputes.',
+                fullDescription: '# Property & Land Disputes\n\nWe provide comprehensive legal services in Property & Land Disputes.',
+                icon: 'Home',
                 order: 4,
             },
             {
-                title: 'Civil Law Services',
-                slug: 'civil-law',
-                shortDescription: 'Comprehensive civil law services protecting rights and resolving disputes.',
-                fullDescription: `### Civil Law Services
-
-Chowdhry Law Chambers provides comprehensive civil law services with a focus on protecting legal rights, resolving disputes efficiently, and delivering practical legal solutions.
-
-Our civil law practice covers a wide range of matters, including property, contracts, and civil litigation. We represent clients before courts, tribunals, and authorities with thorough preparation and strategic advocacy.
-
----
-
-### Our Civil Law Expertise Includes:
-
-- **Property Disputes**  
-  Legal assistance in ownership disputes, possession matters, partition suits, and title-related conflicts.
-
-- **Contractual Matters**  
-  Drafting, review, enforcement, and dispute resolution related to agreements and contracts.
-
-- **Recovery Suits**  
-  Representation in money recovery cases, dues, and financial claims through civil proceedings.
-
-- **Injunctions and Declarations**  
-  Legal remedies including temporary and permanent injunctions, declaratory reliefs, and court orders to protect rights.
-
----
-
-### Our Approach
-
-We focus on clear legal advice, strong documentation, and effective representation to ensure timely and favorable outcomes for our clients.`,
-                imageUrl: 'https://images.unsplash.com/photo-1589216532380-a602c7acaed2?auto=format&fit=crop&q=80',
-                icon: 'Scale',
+                title: 'Corporate & Commercial Litigation',
+                slug: 'corporate-commercial-litigation',
+                shortDescription: 'Expert legal representation in Corporate & Commercial Litigation.',
+                fullDescription: '# Corporate & Commercial Litigation\n\nWe provide comprehensive legal services in Corporate & Commercial Litigation.',
+                icon: 'Briefcase',
                 order: 5,
+            },
+            {
+                title: 'Arbitration & Mediation',
+                slug: 'arbitration-mediation',
+                shortDescription: 'Expert legal representation in Arbitration & Mediation.',
+                fullDescription: '# Arbitration & Mediation\n\nWe provide comprehensive legal services in Arbitration & Mediation.',
+                icon: 'Handshake',
+                order: 6,
+            },
+            {
+                title: 'Company Law (NCLT / NCLAT)',
+                slug: 'company-law-nclt-nclat',
+                shortDescription: 'Expert legal representation in Company Law (NCLT / NCLAT).',
+                fullDescription: '# Company Law (NCLT / NCLAT)\n\nWe provide comprehensive legal services in Company Law (NCLT / NCLAT).',
+                icon: 'Building',
+                order: 7,
+            },
+            {
+                title: 'Debt Recovery & Financial Litigation',
+                slug: 'debt-recovery-financial-litigation',
+                shortDescription: 'Expert legal representation in Debt Recovery & Financial Litigation.',
+                fullDescription: '# Debt Recovery & Financial Litigation\n\nWe provide comprehensive legal services in Debt Recovery & Financial Litigation.',
+                icon: 'Landmark',
+                order: 8,
+            },
+            {
+                title: 'Constitutional & Writ Jurisdiction',
+                slug: 'constitutional-writ-jurisdiction',
+                shortDescription: 'Expert legal representation in Constitutional & Writ Jurisdiction.',
+                fullDescription: '# Constitutional & Writ Jurisdiction\n\nWe provide comprehensive legal services in Constitutional & Writ Jurisdiction.',
+                icon: 'BookOpen',
+                order: 9,
+            },
+            {
+                title: 'Intellectual Property Rights (IPR)',
+                slug: 'intellectual-property-rights-ipr',
+                shortDescription: 'Expert legal representation in Intellectual Property Rights (IPR).',
+                fullDescription: '# Intellectual Property Rights (IPR)\n\nWe provide comprehensive legal services in Intellectual Property Rights (IPR).',
+                icon: 'Cpu',
+                order: 10,
+            },
+            {
+                title: 'Insolvency & Restructuring',
+                slug: 'insolvency-restructuring',
+                shortDescription: 'Expert legal representation in Insolvency & Restructuring.',
+                fullDescription: '# Insolvency & Restructuring\n\nWe provide comprehensive legal services in Insolvency & Restructuring.',
+                icon: 'TrendingDown',
+                order: 11,
+            },
+            {
+                title: 'Contractual & Commercial Disputes',
+                slug: 'contractual-commercial-disputes',
+                shortDescription: 'Expert legal representation in Contractual & Commercial Disputes.',
+                fullDescription: '# Contractual & Commercial Disputes\n\nWe provide comprehensive legal services in Contractual & Commercial Disputes.',
+                icon: 'FileText',
+                order: 12,
+            },
+            {
+                title: 'Regulatory & Tribunal Litigation',
+                slug: 'regulatory-tribunal-litigation',
+                shortDescription: 'Expert legal representation in Regulatory & Tribunal Litigation.',
+                fullDescription: '# Regulatory & Tribunal Litigation\n\nWe provide comprehensive legal services in Regulatory & Tribunal Litigation.',
+                icon: 'Shield',
+                order: 13,
             }
         ];
 
