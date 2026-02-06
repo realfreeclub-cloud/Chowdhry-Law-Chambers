@@ -148,29 +148,10 @@ export default function GalleryPage() {
                         <div key={img._id} className="group relative bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden">
                             <div className="aspect-square bg-slate-100 relative">
                                 <img src={img.url} alt={img.title} className="w-full h-full object-cover" />
-                                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                                    <button
-                                        onClick={() => {
-                                            const fullUrl = window.location.origin + img.url;
-                                            navigator.clipboard.writeText(fullUrl);
-                                            alert("✅ Full URL copied: " + fullUrl);
-                                        }}
-                                        className="p-2 bg-white text-slate-900 rounded-full hover:bg-slate-100 transition"
-                                        title="Copy Full URL"
-                                    >
-                                        <Copy className="w-4 h-4" />
-                                    </button>
-                                    <button
-                                        onClick={() => handleDelete(img._id)}
-                                        className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
-                                    >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
-                                </div>
                             </div>
                             <div className="p-3">
                                 <h3 className="font-semibold text-slate-900 truncate">{img.title}</h3>
-                                <div className="flex items-center justify-between mt-1">
+                                <div className="flex items-center justify-between mt-1 mb-2">
                                     <span className="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
                                         {img.category}
                                     </span>
@@ -180,6 +161,33 @@ export default function GalleryPage() {
                                     ) : (
                                         <EyeOff className="w-3 h-3 text-slate-400" />
                                     )}
+                                </div>
+                                {/* Action Buttons - Always Visible */}
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={async () => {
+                                            try {
+                                                const fullUrl = window.location.origin + img.url;
+                                                await navigator.clipboard.writeText(fullUrl);
+                                                alert("✅ Copied: " + fullUrl);
+                                            } catch (err) {
+                                                // Fallback for older browsers
+                                                prompt("Copy this URL:", window.location.origin + img.url);
+                                            }
+                                        }}
+                                        className="flex-1 px-2 py-1.5 text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded transition flex items-center justify-center gap-1"
+                                        title="Copy Full URL"
+                                    >
+                                        <Copy className="w-3 h-3" />
+                                        <span>Copy URL</span>
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(img._id)}
+                                        className="px-2 py-1.5 text-xs bg-red-50 hover:bg-red-100 text-red-600 rounded transition"
+                                        title="Delete"
+                                    >
+                                        <Trash2 className="w-3 h-3" />
+                                    </button>
                                 </div>
                             </div>
                         </div>
