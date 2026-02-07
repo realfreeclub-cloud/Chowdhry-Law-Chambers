@@ -25,11 +25,15 @@ export default async function DynamicPage({ params }: PageProps) {
     // or iterate over sections
     const sections = page.sections || [];
 
+    // Fetch config for sections
+    const { getSiteConfig } = await import("@/lib/config");
+    const config = await getSiteConfig();
+
     return (
         <main>
             {/* Use sections if available */}
             {sections.map((section: any, idx: number) => (
-                <SectionRenderer key={idx} section={section} />
+                <SectionRenderer key={idx} section={section} config={JSON.parse(JSON.stringify(config))} />
             ))}
         </main>
     );

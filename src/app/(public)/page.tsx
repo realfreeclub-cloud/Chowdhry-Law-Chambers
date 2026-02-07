@@ -27,7 +27,7 @@ export default async function HomePage() {
   return (
     <main>
       {sections.map((section: any, idx: number) => (
-        <SectionRenderer key={idx} section={section} sliders={JSON.parse(JSON.stringify(sliders))} />
+        <SectionRenderer key={idx} section={section} sliders={JSON.parse(JSON.stringify(sliders))} config={JSON.parse(JSON.stringify(config))} />
       ))}
 
       <ClientLogos

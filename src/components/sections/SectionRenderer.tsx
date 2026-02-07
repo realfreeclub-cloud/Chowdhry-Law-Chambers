@@ -9,8 +9,9 @@ import Testimonials from "./Testimonials";
 import BlogSection from "./BlogSection";
 import ClientLogos from "./ClientLogos";
 import MapSectionEditable from "./MapSectionEditable";
+import ContactDetailed from "./ContactDetailed";
 
-export default function SectionRenderer({ section, sliders }: { section: any, sliders?: any[] }) {
+export default function SectionRenderer({ section, sliders, config }: { section: any, sliders?: any[], config?: any }) {
     // Parsing content if it's a string (back compatibility) or Object
     const content = typeof section.content === 'string'
         ? JSON.parse(section.content)
@@ -35,6 +36,8 @@ export default function SectionRenderer({ section, sliders }: { section: any, sl
             return <ClientLogos data={content} />;
         case 'MAP':
             return <MapSectionEditable data={content} />;
+        case 'CONTACT_DETAILED':
+            return <ContactDetailed data={content} config={config} />;
         default:
             return null;
     }

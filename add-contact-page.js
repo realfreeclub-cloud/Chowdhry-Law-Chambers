@@ -25,20 +25,19 @@ async function run() {
             metaDesc: 'Get in touch with Chowdhry Law Chambers for expert legal guidance and representation.',
             sections: [
                 {
-                    type: 'MAP',
+                    type: 'CONTACT_DETAILED',
                     order: 0,
                     content: {}
                 }
             ]
         };
 
-        const existing = await Page.findOne({ slug: 'contact' });
-        if (existing) {
-            console.log('Contact page already exists in DB');
-        } else {
-            await Page.create(contactPage);
-            console.log('Contact page added to DB');
-        }
+        const existing = await Page.findOneAndUpdate(
+            { slug: 'contact' },
+            { $set: contactPage },
+            { upsert: true, new: true }
+        );
+        console.log('Contact page synced to DB');
 
         await mongoose.disconnect();
     } catch (err) {

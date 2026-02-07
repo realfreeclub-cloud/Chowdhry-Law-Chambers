@@ -518,6 +518,25 @@ Chowdhry Law Chambers maintains a robust litigation practice across Civil, Crimi
         });
         console.log('✅ Home page created with dynamic content');
 
+        // --- Contact Page ---
+        const existingContact = await Page.findOne({ slug: 'contact' });
+        if (!existingContact) {
+            await Page.create({
+                title: 'Contact Us',
+                slug: 'contact',
+                isPublished: true,
+                metaDesc: 'Get in touch with Chowdhry Law Chambers for expert legal guidance and representation.',
+                sections: [
+                    {
+                        type: 'CONTACT_DETAILED',
+                        order: 0,
+                        content: {}
+                    }
+                ]
+            });
+            console.log('✅ Contact page created');
+        }
+
         console.log('\n🎉 Database seeding completed!');
         console.log('\n📝 Admin Login Credentials:');
         console.log('   URL: http://localhost:3000/admin/login');
