@@ -107,7 +107,7 @@ export default async function TeamMemberPage(props: Props) {
                                     </div>
                                 )}
 
-                                <Link href="/contact" className="block w-full bg-[var(--primary)] hover:bg-slate-800 text-white text-center font-bold py-4 rounded-lg transition-all shadow-md hover:shadow-lg mt-8">
+                                <Link href="/book-appointment" className="block w-full bg-[var(--primary)] hover:bg-slate-800 text-white text-center font-bold py-4 rounded-lg transition-all shadow-md hover:shadow-lg mt-8">
                                     Book a Consultation
                                 </Link>
                             </div>

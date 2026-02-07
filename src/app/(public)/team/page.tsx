@@ -94,10 +94,13 @@ export default async function TeamPage() {
                                             </a>
                                         )}
                                     </div>
-                                    <span className="text-[var(--secondary)] font-bold text-sm flex items-center group-hover:translate-x-1 transition-transform">
+                                    <Link
+                                        href={`/team/${member._id}`}
+                                        className="text-[var(--secondary)] font-bold text-sm flex items-center group-hover:translate-x-1 transition-transform relative z-20"
+                                    >
                                         View Profile
                                         <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                                    </span>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
