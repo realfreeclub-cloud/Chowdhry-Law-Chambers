@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import {
     Upload, Trash2, Eye, EyeOff, Plus, Loader2, Image as ImageIcon,
-    MoreVertical, Check, X, Copy, CheckCircle
+    MoreVertical, Check, X, Copy, CheckCircle, Pencil
 } from "lucide-react";
 
 interface GalleryItem {
@@ -20,8 +20,9 @@ export default function GalleryPage() {
     const [loading, setLoading] = useState(true);
     const [uploading, setUploading] = useState(false);
 
-    // Upload State
+    // Upload/Edit State
     const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const [editingItem, setEditingItem] = useState<GalleryItem | null>(null);
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [newImageTitle, setNewImageTitle] = useState("");
     const [newImageCategory, setNewImageCategory] = useState("General");
@@ -52,44 +53,75 @@ export default function GalleryPage() {
         }
     };
 
-    const handleUpload = async () => {
-        if (!selectedFile || !newImageTitle) return;
+    const openEditModal = (item: GalleryItem) => {
+        setEditingItem(item);
+        setNewImageTitle(item.title);
+        setNewImageCategory(item.category);
+        setSelectedFile(null); // Reset file input
+        setIsUploadModalOpen(true);
+    };
+
+    const openUploadModal = () => {
+        setEditingItem(null);
+        setNewImageTitle("");
+        setNewImageCategory("General");
+        setSelectedFile(null);
+        setIsUploadModalOpen(true);
+    };
+
+    const handleSave = async () => {
+        if (!newImageTitle) return;
+        // For new uploads, file is required. For edits, it's optional (only if changing image)
+        if (!editingItem && !selectedFile) return;
 
         setUploading(true);
         try {
-            // 1. Upload File
-            const formData = new FormData();
-            formData.append("file", selectedFile);
+            let imageUrl = editingItem?.url || "";
 
-            const uploadRes = await fetch("/api/upload", {
-                method: "POST",
-                body: formData,
-            });
+            // 1. Upload File if selected
+            if (selectedFile) {
+                const formData = new FormData();
+                formData.append("file", selectedFile);
 
-            if (!uploadRes.ok) throw new Error("Upload failed");
-            const uploadData = await uploadRes.json();
-            const imageUrl = uploadData.url;
+                const uploadRes = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                });
 
-            // 2. Create Gallery Record
-            const galleryRes = await fetch("/api/gallery", {
-                method: "POST",
+                if (!uploadRes.ok) throw new Error("Upload failed");
+                const uploadData = await uploadRes.json();
+                imageUrl = uploadData.url;
+            }
+
+            // 2. Create or Update Record
+            const method = editingItem ? "PUT" : "POST";
+            const url = editingItem ? `/api/gallery/${editingItem._id}` : "/api/gallery";
+
+            const payload = {
+                title: newImageTitle,
+                category: newImageCategory,
+                url: imageUrl,
+                showInGallery: editingItem ? editingItem.showInGallery : true
+            };
+
+            const res = await fetch(url, {
+                method: method,
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    title: newImageTitle,
-                    url: imageUrl,
-                    category: newImageCategory,
-                    showInGallery: true
-                }),
+                body: JSON.stringify(payload),
             });
 
-            if (galleryRes.ok) {
+            if (res.ok) {
                 fetchImages();
                 setIsUploadModalOpen(false);
+                setEditingItem(null);
                 setSelectedFile(null);
                 setNewImageTitle("");
+            } else {
+                throw new Error("Failed to save gallery item");
             }
         } catch (error) {
-            alert("Failed to upload image.");
+            console.error(error);
+            alert("Failed to save image.");
         } finally {
             setUploading(false);
         }
@@ -113,18 +145,17 @@ export default function GalleryPage() {
         );
         setImages(updatedImages);
 
-        // API Call (using POST/PUT pattern if we had one for updates, or just quick hack could re-add)
-        // For now let's assume we don't need dedicated update route for this demo, 
-        // BUT actually we should probably support updating. 
-        // NOTE: The previous API definition didn't include PUT /api/gallery/[id]. 
-        // Assuming user just handles delete/re-upload or I add PUT later.
-
-        // Let's rely on simple delete/create for managing structure for now if complex.
-        // Actually, let's just create a quick PUT handler or assume it exists? 
-        // In the interest of time, I won't implement a full dedicated edit modal for visibility right now unless requested.
-        // Wait, for toggling logic I need an endpoint. 
-        // SKIP: I'll just stick to adding/deleting to match plan simplicity, unless user demands edit.
-        // Actually I can just add PUT method to [id]/route.ts easily next step.
+        try {
+            await fetch(`/api/gallery/${item._id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ showInGallery: !item.showInGallery }),
+            });
+        } catch (error) {
+            // Revert on failure
+            fetchImages();
+            alert("Failed to update visibility");
+        }
     };
 
     return (
@@ -132,7 +163,7 @@ export default function GalleryPage() {
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold text-slate-900">Gallery Manager</h1>
                 <button
-                    onClick={() => setIsUploadModalOpen(true)}
+                    onClick={openUploadModal}
                     className="flex items-center space-x-2 bg-slate-900 text-white px-4 py-2 rounded-lg hover:bg-slate-800"
                 >
                     <Plus className="w-4 h-4" />
@@ -156,11 +187,13 @@ export default function GalleryPage() {
                                         {img.category}
                                     </span>
                                     {/* Visibility Indicator */}
-                                    {img.showInGallery ? (
-                                        <Eye className="w-3 h-3 text-green-500" />
-                                    ) : (
-                                        <EyeOff className="w-3 h-3 text-slate-400" />
-                                    )}
+                                    <button onClick={() => toggleVisibility(img)}>
+                                        {img.showInGallery ? (
+                                            <Eye className="w-4 h-4 text-green-500 hover:text-green-600 cursor-pointer" />
+                                        ) : (
+                                            <EyeOff className="w-4 h-4 text-slate-400 hover:text-slate-500 cursor-pointer" />
+                                        )}
+                                    </button>
                                 </div>
                                 {/* Action Buttons - Always Visible */}
                                 <div className="flex gap-2">
@@ -171,22 +204,28 @@ export default function GalleryPage() {
                                                 await navigator.clipboard.writeText(fullUrl);
                                                 alert("✅ Copied: " + fullUrl);
                                             } catch (err) {
-                                                // Fallback for older browsers
                                                 prompt("Copy this URL:", window.location.origin + img.url);
                                             }
                                         }}
-                                        className="flex-1 px-2 py-1.5 text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 rounded transition flex items-center justify-center gap-1"
-                                        title="Copy Full URL"
+                                        className="p-1.5 text-slate-600 bg-slate-100 hover:bg-slate-200 rounded transition"
+                                        title="Copy Link"
                                     >
-                                        <Copy className="w-3 h-3" />
-                                        <span>Copy URL</span>
+                                        <Copy className="w-3.5 h-3.5" />
+                                    </button>
+                                    <button
+                                        onClick={() => openEditModal(img)}
+                                        className="flex-1 px-2 py-1.5 text-xs bg-blue-50 hover:bg-blue-100 text-blue-600 rounded transition flex items-center justify-center gap-1"
+                                        title="Edit"
+                                    >
+                                        <Pencil className="w-3 h-3" />
+                                        <span>Edit</span>
                                     </button>
                                     <button
                                         onClick={() => handleDelete(img._id)}
-                                        className="px-2 py-1.5 text-xs bg-red-50 hover:bg-red-100 text-red-600 rounded transition"
+                                        className="p-1.5 text-red-600 bg-red-50 hover:bg-red-100 rounded transition"
                                         title="Delete"
                                     >
-                                        <Trash2 className="w-3 h-3" />
+                                        <Trash2 className="w-3.5 h-3.5" />
                                     </button>
                                 </div>
                             </div>
@@ -200,7 +239,7 @@ export default function GalleryPage() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
                     <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 m-4">
                         <div className="flex justify-between items-center mb-6">
-                            <h2 className="text-xl font-bold text-slate-900">Upload Image</h2>
+                            <h2 className="text-xl font-bold text-slate-900">{editingItem ? 'Edit Image' : 'Upload Image'}</h2>
                             <button onClick={() => setIsUploadModalOpen(false)} className="text-slate-400 hover:text-slate-600">
                                 <X className="w-5 h-5" />
                             </button>
@@ -225,6 +264,7 @@ export default function GalleryPage() {
                                         <Upload className="w-8 h-8 mx-auto mb-2 text-slate-400" />
                                         <p className="text-sm font-medium">Click to upload or drag and drop</p>
                                         <p className="text-xs mt-1">PNG, JPG, up to 10MB</p>
+                                        {editingItem && <p className="text-xs text-blue-500 mt-2 font-medium">(Leave empty to keep existing image)</p>}
                                     </div>
                                 )}
                             </div>
@@ -256,12 +296,12 @@ export default function GalleryPage() {
                             </div>
 
                             <button
-                                onClick={handleUpload}
-                                disabled={!selectedFile || !newImageTitle || uploading}
+                                onClick={handleSave}
+                                disabled={(!editingItem && !selectedFile) || !newImageTitle || uploading}
                                 className="w-full bg-[var(--secondary)] text-white py-3 rounded-lg font-bold hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             >
                                 {uploading && <Loader2 className="w-4 h-4 animate-spin" />}
-                                {uploading ? "Uploading..." : "Save Image"}
+                                {uploading ? "Saving..." : (editingItem ? "Update Image" : "Save Image")}
                             </button>
                         </div>
                     </div>
