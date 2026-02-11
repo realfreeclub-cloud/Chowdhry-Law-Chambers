@@ -127,11 +127,7 @@ export default function ContactDetailed({ data, config }: ContactDetailedProps) 
 
                     {/* Right Column: Contact Form */}
                     <div className="lg:col-span-5 relative">
-                        <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-8 md:p-12 sticky top-8">
-                            <div className="text-center mb-10">
-                                <h2 className="text-3xl font-bold text-slate-900 mb-4 font-[var(--font-heading)]">Request a Consultation</h2>
-                                <p className="text-slate-500 leading-relaxed text-sm">Please provide your details and a brief summary of your legal matter.</p>
-                            </div>
+                        <div className="sticky top-8">
                             <AppointmentForm />
                         </div>
                     </div>
