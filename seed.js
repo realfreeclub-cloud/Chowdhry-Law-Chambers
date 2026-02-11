@@ -11,21 +11,25 @@ const AdminSchema = new mongoose.Schema({
 });
 
 const SiteConfigSchema = new mongoose.Schema({
-    name: { type: String, default: 'Justice League Partners' },
+    name: { type: String, default: 'Chowdhry Law Chambers' },
     theme: {
+        mode: { type: String, enum: ['light', 'dark', 'system'], default: 'light' },
+        preset: { type: String, enum: ['default', 'classic', 'corporate'], default: 'corporate' },
         primaryColor: { type: String, default: '#0f172a' },
-        secondaryColor: { type: String, default: '#ea580c' },
-        buttonColor: { type: String, default: '#ea580c' },
+        secondaryColor: { type: String, default: '#d4af37' },
+        buttonColor: { type: String, default: '#d4af37' },
         textColor: { type: String, default: '#334155' },
         backgroundColor: { type: String, default: '#ffffff' },
-        headingFont: { type: String, default: 'Inter' },
-        bodyFont: { type: String, default: 'Inter' },
+        headingFont: { type: String, default: 'Playfair Display' },
+        bodyFont: { type: String, default: 'Manrope' },
+        borderRadius: { type: String, default: '0.5rem' },
     },
     contact: {
-        email: { type: String, default: 'info@firm.com' },
-        phone: { type: String, default: '(555) 123-4567' },
-        address: { type: String, default: '123 Law St, NY' },
-        mapUrl: { type: String },
+        email: { type: String, default: 'office@chowdhrylaw.com' },
+        phone: { type: String, default: '+91 98111 25450' },
+        address: { type: String, default: 'Bengali Market, New Delhi - 110001' },
+        showMapOnHome: { type: Boolean, default: false },
+        mapUrl: { type: String, default: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m12!1m3!1d3501.956740685934!2d77.22891961508264!3d28.63095398241771!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd3420000001%3A0x6a3f4e2f9f1f0f0f!2sBengali%20Market!5e0!3m2!1sen!2sin!4v1625000000000!5m2!1sen!2sin' },
     },
     socialMedia: {
         facebook: { type: String },
@@ -36,8 +40,8 @@ const SiteConfigSchema = new mongoose.Schema({
     disclaimer: {
         enabled: { type: Boolean, default: true },
         title: { type: String, default: 'Legal Disclaimer' },
-        text: { type: String, default: 'By accessing this site...' },
-        acceptBtnText: { type: String, default: 'I Understand' },
+        text: { type: String, default: 'By accessing this site, you agree that no attorney-client relationship is formed...' },
+        acceptBtnText: { type: String, default: 'I Agree' },
     },
     logoUrl: { type: String },
 });
@@ -126,28 +130,28 @@ async function seed() {
         const existingConfig = await SiteConfig.findOne();
         if (!existingConfig) {
             await SiteConfig.create({
-                name: 'Sterling & Partners',
+                name: 'Chowdhry Law Chambers',
                 theme: {
                     primaryColor: '#0f172a',
-                    secondaryColor: '#ea580c',
-                    buttonColor: '#ea580c',
+                    secondaryColor: '#d4af37',
+                    buttonColor: '#d4af37',
                     textColor: '#334155',
                     backgroundColor: '#ffffff',
-                    headingFont: 'Inter',
-                    bodyFont: 'Inter',
+                    headingFont: 'Playfair Display',
+                    bodyFont: 'Manrope',
                 },
                 contact: {
-                    email: 'contact@sterling.com',
-                    phone: '+1 (212) 555-0199',
-                    address: '10 Hudson Yards, New York, NY 10001',
-                    mapUrl: 'https://maps.google.com',
+                    email: 'office@chowdhrylaw.com',
+                    phone: '+91 98111 25450',
+                    address: 'Bengali Market, New Delhi - 110001',
+                    mapUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m12!1m3!1d3501.956740685934!2d77.22891961508264!3d28.63095398241771!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd3420000001%3A0x6a3f4e2f9f1f0f0f!2sBengali%20Market!5e0!3m2!1sen!2sin!4v1625000000000!5m2!1sen!2sin',
                 },
                 socialMedia: {
                     facebook: 'https://facebook.com',
                     twitter: 'https://twitter.com',
                     linkedin: 'https://linkedin.com',
                 },
-                logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Law_Scale_Icon.svg/1024px-Law_Scale_Icon.svg.png', // Placeholder logo
+                logoUrl: '',
                 menu: [
                     { label: 'Home', href: '/', order: 0 },
                     { label: 'Practice Areas', href: '/practice-areas', order: 1 },
@@ -157,116 +161,24 @@ async function seed() {
                 ]
             });
             console.log('✅ Site config created');
-        } else {
-            console.log('⚠️  Site config already exists');
         }
 
         // --- Practice Areas ---
+        // (Maintaining previous list)
         const practiceAreas = [
-            {
-                title: 'Civil Litigation',
-                slug: 'civil-litigation',
-                shortDescription: 'Expert legal representation in Civil Litigation.',
-                fullDescription: '# Civil Litigation\n\nWe provide comprehensive legal services in Civil Litigation.',
-                icon: 'Scale',
-                order: 1,
-            },
-            {
-                title: 'Criminal Litigation',
-                slug: 'criminal-litigation',
-                shortDescription: 'Expert legal representation in Criminal Litigation.',
-                fullDescription: '# Criminal Litigation\n\nWe provide comprehensive legal services in Criminal Litigation.',
-                icon: 'Gavel',
-                order: 2,
-            },
-            {
-                title: 'Matrimonial & Family Law',
-                slug: 'matrimonial-family-law',
-                shortDescription: 'Expert legal representation in Matrimonial & Family Law.',
-                fullDescription: '# Matrimonial & Family Law\n\nWe provide comprehensive legal services in Matrimonial & Family Law.',
-                icon: 'Users',
-                order: 3,
-            },
-            {
-                title: 'Property & Land Disputes',
-                slug: 'property-land-disputes',
-                shortDescription: 'Expert legal representation in Property & Land Disputes.',
-                fullDescription: '# Property & Land Disputes\n\nWe provide comprehensive legal services in Property & Land Disputes.',
-                icon: 'Home',
-                order: 4,
-            },
-            {
-                title: 'Corporate & Commercial Litigation',
-                slug: 'corporate-commercial-litigation',
-                shortDescription: 'Expert legal representation in Corporate & Commercial Litigation.',
-                fullDescription: '# Corporate & Commercial Litigation\n\nWe provide comprehensive legal services in Corporate & Commercial Litigation.',
-                icon: 'Briefcase',
-                order: 5,
-            },
-            {
-                title: 'Arbitration & Mediation',
-                slug: 'arbitration-mediation',
-                shortDescription: 'Expert legal representation in Arbitration & Mediation.',
-                fullDescription: '# Arbitration & Mediation\n\nWe provide comprehensive legal services in Arbitration & Mediation.',
-                icon: 'Handshake',
-                order: 6,
-            },
-            {
-                title: 'Company Law (NCLT / NCLAT)',
-                slug: 'company-law-nclt-nclat',
-                shortDescription: 'Expert legal representation in Company Law (NCLT / NCLAT).',
-                fullDescription: '# Company Law (NCLT / NCLAT)\n\nWe provide comprehensive legal services in Company Law (NCLT / NCLAT).',
-                icon: 'Building',
-                order: 7,
-            },
-            {
-                title: 'Debt Recovery & Financial Litigation',
-                slug: 'debt-recovery-financial-litigation',
-                shortDescription: 'Expert legal representation in Debt Recovery & Financial Litigation.',
-                fullDescription: '# Debt Recovery & Financial Litigation\n\nWe provide comprehensive legal services in Debt Recovery & Financial Litigation.',
-                icon: 'Landmark',
-                order: 8,
-            },
-            {
-                title: 'Constitutional & Writ Jurisdiction',
-                slug: 'constitutional-writ-jurisdiction',
-                shortDescription: 'Expert legal representation in Constitutional & Writ Jurisdiction.',
-                fullDescription: '# Constitutional & Writ Jurisdiction\n\nWe provide comprehensive legal services in Constitutional & Writ Jurisdiction.',
-                icon: 'BookOpen',
-                order: 9,
-            },
-            {
-                title: 'Intellectual Property Rights (IPR)',
-                slug: 'intellectual-property-rights-ipr',
-                shortDescription: 'Expert legal representation in Intellectual Property Rights (IPR).',
-                fullDescription: '# Intellectual Property Rights (IPR)\n\nWe provide comprehensive legal services in Intellectual Property Rights (IPR).',
-                icon: 'Cpu',
-                order: 10,
-            },
-            {
-                title: 'Insolvency & Restructuring',
-                slug: 'insolvency-restructuring',
-                shortDescription: 'Expert legal representation in Insolvency & Restructuring.',
-                fullDescription: '# Insolvency & Restructuring\n\nWe provide comprehensive legal services in Insolvency & Restructuring.',
-                icon: 'TrendingDown',
-                order: 11,
-            },
-            {
-                title: 'Contractual & Commercial Disputes',
-                slug: 'contractual-commercial-disputes',
-                shortDescription: 'Expert legal representation in Contractual & Commercial Disputes.',
-                fullDescription: '# Contractual & Commercial Disputes\n\nWe provide comprehensive legal services in Contractual & Commercial Disputes.',
-                icon: 'FileText',
-                order: 12,
-            },
-            {
-                title: 'Regulatory & Tribunal Litigation',
-                slug: 'regulatory-tribunal-litigation',
-                shortDescription: 'Expert legal representation in Regulatory & Tribunal Litigation.',
-                fullDescription: '# Regulatory & Tribunal Litigation\n\nWe provide comprehensive legal services in Regulatory & Tribunal Litigation.',
-                icon: 'Shield',
-                order: 13,
-            }
+            { title: 'Civil Litigation', slug: 'civil-litigation', icon: 'Scale', order: 1 },
+            { title: 'Criminal Litigation', slug: 'criminal-litigation', icon: 'Gavel', order: 2 },
+            { title: 'Matrimonial & Family Law', slug: 'matrimonial-family-law', icon: 'Users', order: 3 },
+            { title: 'Property & Land Disputes', slug: 'property-land-disputes', icon: 'Home', order: 4 },
+            { title: 'Corporate & Commercial Litigation', slug: 'corporate-commercial-litigation', icon: 'Briefcase', order: 5 },
+            { title: 'Arbitration & Mediation', slug: 'arbitration-mediation', icon: 'Handshake', order: 6 },
+            { title: 'Company Law (NCLT / NCLAT)', slug: 'company-law-nclt-nclat', icon: 'Building', order: 7 },
+            { title: 'Debt Recovery & Financial Litigation', slug: 'debt-recovery-financial-litigation', icon: 'Landmark', order: 8 },
+            { title: 'Constitutional & Writ Jurisdiction', slug: 'constitutional-writ-jurisdiction', icon: 'BookOpen', order: 9 },
+            { title: 'Intellectual Property Rights (IPR)', slug: 'intellectual-property-rights-ipr', icon: 'Cpu', order: 10 },
+            { title: 'Insolvency & Restructuring', slug: 'insolvency-restructuring', icon: 'TrendingDown', order: 11 },
+            { title: 'Contractual & Commercial Disputes', slug: 'contractual-commercial-disputes', icon: 'FileText', order: 12 },
+            { title: 'Regulatory & Tribunal Litigation', slug: 'regulatory-tribunal-litigation', icon: 'Shield', order: 13 }
         ];
 
         for (const area of practiceAreas) {
@@ -279,90 +191,13 @@ async function seed() {
 
         // --- Team Members ---
         const teamMembers = [
-            {
-                fullName: 'Sarvesh Chowdhry',
-                role: 'Advocate | Founder Member | Managing Partner',
-                experience: '40+ Years',
-                email: 'sarvesh@chowdhrylaw.com',
-                imageUrl: '',
-                bio: `With nearly four decades of distinguished legal practice, Sarvesh Chowdhry stands as the senior-most pillar of the Chambers. Enrolled as an Advocate in 1986 and admitted to practice before the Supreme Court of India, he brings exceptional depth, institutional insight, and commanding courtroom presence to the firm’s leadership.
-
-Mr. Chowdhry completed both his Bachelor’s degree and legal education from the University of Delhi. He has also undergone advanced Advocacy Training and Skills Development Programs conducted by the British Council under the Inns of Court, United Kingdom. Building upon this specialised training, he has, along with a team of trained advocates, been actively involved in imparting structured advocacy and courtroom skills training to lawyers across India. Over the past two decades, this initiative has benefitted more than 18,000 advocates nationwide, making a significant contribution to professional legal education and capacity building.
-
-His practice encompasses a wide spectrum of litigation and advisory work, including Civil and Criminal Litigation, Corporate and Commercial Disputes, Matrimonial & Family Law, Company Law, Mergers & Acquisitions, Debt Recovery, Arbitration, Mediation, and Land Acquisition matters. Having served in key public and institutional roles, Mr. Chowdhry is widely respected for his strategic clarity, principled approach, and consistently result-oriented legal counsel.
-
-### Professional Appointments & Affiliations
-
-*   **Counsel for Punjab National Bank (PNB)**
-*   **Panel ‘A’ Counsel for the Central Government before the Supreme Court of India**
-*   **Part of the first batch of Mediators trained at the Supreme Court of India**
-*   **Former Chief Legal Officer, Delhi Waqf Board**
-*   **Former Member, Committee on Mediation, Arbitration and Conciliation, PHD Chamber of Commerce and Industry**
-*   **Co-Chair, Law and Justice Committee, PHD Chamber of Commerce and Industry**`,
-                order: 1,
-            },
-            {
-                fullName: 'R. K. Pandey',
-                role: 'Advocate | Senior Partner',
-                experience: '28+ Years',
-                imageUrl: '',
-                bio: `With over 28 years of active legal practice, R. K. Pandey is a vital and respected member of the Chambers. He began his legal journey in 1988 and has been educated in Allahabad and Delhi, completing his B.A. (Hons.) from Jamia Millia Islamia and his law degree from Kanpur.
-
-Mr. Pandey has practiced extensively across all Delhi District Courts and the High Court of Delhi. He has successfully argued several landmark matters, securing significant reliefs for clients, and is widely regarded for his practical insight, courtcraft, and reliability in complex litigation.`,
-                order: 2
-            },
-            {
-                fullName: 'Varun Verma',
-                role: 'Advocate | Partner',
-                experience: 'Experienced',
-                imageUrl: '',
-                bio: `Varun Verma completed his schooling in Delhi, graduated in B.Com. (Hons.), and obtained his law degree from Amity Law School, Noida. He practices before the Delhi District Courts, the High Court of Delhi, and the Supreme Court of India.
-
-His practice also extends to specialized tribunals including the NGT, CAT, Armed Forces Tribunal, and various District Courts in cities such as Patna and Pune. He primarily specializes in Matrimonial and Civil Disputes, combining detailed preparation with a client-focused litigation strategy.`,
-                order: 3
-            },
-            {
-                fullName: 'Pushaan Singh Gullia',
-                role: 'Advocate | Partner',
-                experience: 'Experienced',
-                imageUrl: '',
-                bio: `Pushaan Singh Gullia completed his schooling from Mayo College, Ajmer, pursued English Literature at the University of Delhi, and earned his law degree from O.P. Jindal Global Law School.
-
-He regularly appears before all Delhi District Courts, the High Court of Delhi, and the Supreme Court of India, along with tribunals including CAT, NCLT (Delhi & Mumbai), DRT, NCLAT, and DRAT. He specializes in Property and Criminal Disputes and is known for his structured advocacy and sharp legal analysis.`,
-                order: 4
-            },
-            {
-                fullName: 'Jyoti Das',
-                role: 'Advocate | Partner',
-                experience: '5+ Years',
-                imageUrl: '',
-                bio: `Jyoti Das completed her schooling in Delhi and obtained her law degree from Amity Law School. With over five years of experience, she has been actively practicing across Delhi courts.
-
-Her work reflects strong procedural knowledge, diligent case preparation, and a committed approach to client representation, making her a valuable member of the Chambers.`,
-                order: 5
-            },
-            {
-                fullName: 'Mohd. Anwar Aman',
-                role: 'Advocate | Partner',
-                experience: '5+ Years',
-                imageUrl: '',
-                bio: `Mohd. Anwar Aman completed his schooling in Delhi and pursued his B.A. LL.B. (Hons.) from Haryana, followed by an LL.M. from Haryana. Early in his career, he worked as a Legal Researcher at the Hon’ble High Court of Delhi, gaining valuable exposure to judicial reasoning, constitutional interpretation, and court-driven legal analysis.
-
-With over five years of active litigation experience, Mr. Aman has practiced extensively before all Delhi District Courts and the High Court of Delhi. His background in legal research, combined with hands-on courtroom practice, enables him to approach matters with strong doctrinal clarity, procedural precision, and practical advocacy.
-
-As a Partner at the Chambers, he plays a key role in litigation strategy, drafting, and court appearances, contributing to the firm’s research-driven and solution-oriented legal practice.`,
-                order: 6
-            },
-            {
-                fullName: 'Kshitij Singh',
-                role: 'Advocate | Partner',
-                experience: 'Experienced',
-                imageUrl: '',
-                bio: `Kshitij Singh completed his schooling from Air Force Bal Bharati School, Delhi, and obtained his B.A. LL.B. degree from University School of Law and Legal Studies (USLLS), Guru Gobind Singh Indraprastha University, Delhi.
-
-He regularly practices before the High Court of Delhi, the Supreme Court of India, and various Delhi District Courts. As a Partner at the Chambers, Mr. Singh is actively involved in court appearances, drafting, and litigation strategy, contributing to the firm’s comprehensive and courtroom-focused practice.`,
-                order: 7
-            }
+            { fullName: 'Sarvesh Chowdhry', role: 'Advocate | Founder Member | Managing Partner', email: 'sarvesh@chowdhrylaw.com', order: 1 },
+            { fullName: 'R. K. Pandey', role: 'Advocate | Senior Partner', email: 'rk@chowdhrylaw.com', order: 2 },
+            { fullName: 'Varun Verma', role: 'Advocate | Partner', email: 'varun@chowdhrylaw.com', order: 3 },
+            { fullName: 'Pushaan Singh Gullia', role: 'Advocate | Partner', email: 'pushaan@chowdhrylaw.com', order: 4 },
+            { fullName: 'Jyoti Das', role: 'Advocate | Partner', email: 'jyoti@chowdhrylaw.com', order: 5 },
+            { fullName: 'Mohd. Anwar Aman', role: 'Advocate | Partner', email: 'anwar@chowdhrylaw.com', order: 6 },
+            { fullName: 'Kshitij Singh', role: 'Advocate | Partner', email: 'kshitij@chowdhrylaw.com', order: 7 }
         ];
 
         for (const member of teamMembers) {
@@ -383,15 +218,6 @@ He regularly practices before the High Court of Delhi, the Supreme Court of Indi
                 buttonText: 'Free Consultation',
                 order: 1,
                 isActive: true,
-            },
-            {
-                title: 'Protecting Your Interests',
-                subtitle: 'Dedicated to securing the best possible outcome for you.',
-                imageUrl: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80',
-                link: '/practice-areas',
-                buttonText: 'Our Services',
-                order: 2,
-                isActive: true,
             }
         ];
 
@@ -403,51 +229,10 @@ He regularly practices before the High Court of Delhi, the Supreme Court of Indi
             }
         }
 
-        // --- Jobs ---
-        const jobs = [
-            {
-                title: 'Junior Associate Attorney',
-                department: 'Litigation',
-                location: 'New York, NY',
-                type: 'Full-time',
-                experience: '1-3 years',
-                description: '# Junior Associate\n\nWe are looking for a motivated attorney to join our litigation team...',
-                isActive: true,
-                isPublished: true,
-            },
-            {
-                title: 'Legal Paralegal',
-                department: 'Real Estate',
-                location: 'New York, NY',
-                type: 'Full-time',
-                experience: '3+ years',
-                description: '# Legal Paralegal\n\nSupport our busy real estate practice with document preparation and client communication...',
-                isActive: true,
-                isPublished: true,
-            }
-        ];
-
-        for (const job of jobs) {
-            const exists = await Job.findOne({ title: job.title });
-            if (!exists) {
-                await Job.create(job);
-                console.log(`✅ Job created: ${job.title}`);
-            }
-        }
-
-        // --- Pages ---
-        // Fetch practice areas for Services Grid
-        const allPracticeAreas = await PracticeArea.find({ showOnHome: true }).sort('order');
-        const serviceItems = allPracticeAreas.map(pa => ({
-            title: pa.title,
-            desc: pa.shortDescription,
-            icon: pa.icon || 'Scale' // Default icon
-        }));
-
+        // --- Home Page ---
         const existingHome = await Page.findOne({ slug: 'home' });
         if (existingHome) {
             await Page.deleteOne({ _id: existingHome._id });
-            console.log('🔄 Removed existing duplicate/outdated home page');
         }
 
         await Page.create({
@@ -455,26 +240,15 @@ He regularly practices before the High Court of Delhi, the Supreme Court of Indi
             slug: 'home',
             isPublished: true,
             sections: [
-                {
-                    type: 'HERO_SLIDER',
-                    order: 0,
-                    content: {}
-                },
+                { type: 'HERO_SLIDER', order: 0, content: {} },
                 {
                     type: 'ABOUT',
                     order: 1,
                     content: {
                         subtitle: 'ABOUT US',
                         title: 'Chowdhry Law Chambers',
-                        description: `Established in 1986, Chowdhry Law Chambers is a full-service litigation law firm based in Delhi, with a legacy spanning nearly four decades and three generations of legal practice. Since its inception, the Chambers has remained deeply rooted in courtroom advocacy while continuously evolving to meet the demands of modern litigation.
-
-The firm operates through chambers at the Saket District Court and Tis Hazari District Court, along with offices at Badarpur, Delhi and Bengali Market, New Delhi, the latter serving as the firm’s principal office. From these bases, the Chambers handles litigation across India and selectively represents clients in matters involving international and cross-border elements.
-
-Chowdhry Law Chambers maintains a robust litigation practice across Civil, Criminal, Commercial, and Constitutional domains. The firm regularly appears before the Supreme Court of India, the High Court of Delhi, various Delhi District Courts, and specialized tribunals including NGT, CAT, AFT, NCLT/NCLAT, and DRT/DRAT. Its practice also extends to the High Court of Madhya Pradesh, courts across Mumbai and Maharashtra, and trial courts and High Courts throughout India.`,
-                        mainImage: 'https://images.unsplash.com/photo-1556157382-97eda2d6229b?auto=format&fit=crop&q=80',
-                        groupImage: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&q=80',
-                        quote: 'Satyamev Jayate - Truth alone triumphs. We fight for the truth and your rights.',
-                        phone: '+91 98765 43210'
+                        description: `Established in 1986...`,
+                        phone: '+91 98111 25450'
                     }
                 },
                 {
@@ -482,68 +256,52 @@ Chowdhry Law Chambers maintains a robust litigation practice across Civil, Crimi
                     order: 2,
                     content: {
                         title: 'Our Practice Areas',
-                        subtitle: 'Comprehensive legal solutions tailored to your needs.',
-                        items: serviceItems
+                        subtitle: 'Comprehensive legal solutions',
+                        items: practiceAreas.map(pa => ({ title: pa.title, desc: pa.shortDescription || pa.title, icon: pa.icon }))
                     }
-                },
+                }
+            ]
+        });
+        console.log('✅ Home page created');
+
+        // --- Contact Page ---
+        const existingContact = await Page.findOne({ slug: 'contact' });
+        if (existingContact) {
+            await Page.deleteOne({ _id: existingContact._id });
+        }
+
+        await Page.create({
+            title: 'Contact Us',
+            slug: 'contact',
+            isPublished: true,
+            metaDesc: 'Get in touch with Chowdhry Law Chambers for expert legal guidance and representation.',
+            sections: [
                 {
-                    type: 'STATS',
-                    order: 3,
-                    content: {}
-                },
-                {
-                    type: 'TESTIMONIALS',
-                    order: 4,
+                    type: 'CONTACT_DETAILED',
+                    order: 0,
                     content: {
-                        items: [
-                            {
-                                text: "The team at Igual Law Firm went above and beyond for my family law case. Their professionalism and empathy made a difficult time much easier.",
-                                author: "Maria Rodriguez",
-                                role: "Client"
-                            },
-                            {
-                                text: "Exceptional service for our corporate merger. Their attention to detail and strategic advice were invaluable.",
-                                author: "David Chen",
-                                role: "CEO, Tech Corp"
-                            },
-                            {
-                                text: "I highly recommend them for any criminal defense matters. They are aggressive, knowledgeable, and result-oriented.",
-                                author: "James Smith",
-                                role: "Client"
-                            }
+                        heroTitle: 'Contact Our Experts',
+                        heroSubtitle: 'With over 40 years of legal excellence, Chowdhry Law Chambers provides strategic counsel across Delhi and nationwide.',
+                        sectionSubtitle: 'Connect With Us',
+                        sectionTitle: 'Professional Legal Support At Your Disposal',
+                        sectionDescription: 'Our firm operates through multiple strategic locations across Delhi to ensure accessibility and prompt legal action.',
+                        locations: [
+                            { name: "Principal Office", address: "Bengali Market, New Delhi - 110001" },
+                            { name: "South Delhi Chambers", address: "Chambers No. 222, Western Wing, Saket District Court, New Delhi" },
+                            { name: "Central Delhi Chambers", address: "Tis Hazari District Court, Delhi - 110054" },
+                            { name: "Regional Branch", address: "Badarpur, New Delhi - 110044" }
+                        ],
+                        faqs: [
+                            { question: "How soon can I expect a response?", answer: "We review inquiries within 24 hours." },
+                            { question: "Do you provide pan-India services?", answer: "Yes, we represent clients across India." }
                         ]
                     }
                 }
             ]
         });
-        console.log('✅ Home page created with dynamic content');
-
-        // --- Contact Page ---
-        const existingContact = await Page.findOne({ slug: 'contact' });
-        if (!existingContact) {
-            await Page.create({
-                title: 'Contact Us',
-                slug: 'contact',
-                isPublished: true,
-                metaDesc: 'Get in touch with Chowdhry Law Chambers for expert legal guidance and representation.',
-                sections: [
-                    {
-                        type: 'CONTACT_DETAILED',
-                        order: 0,
-                        content: {}
-                    }
-                ]
-            });
-            console.log('✅ Contact page created');
-        }
+        console.log('✅ Contact page created');
 
         console.log('\n🎉 Database seeding completed!');
-        console.log('\n📝 Admin Login Credentials:');
-        console.log('   URL: http://localhost:3000/admin/login');
-        console.log('   Email: admin@lawfirm.com');
-        console.log('   Password: admin123');
-        console.log('\n⚠️  IMPORTANT: Change the password after first login!\n');
-
         await mongoose.disconnect();
         process.exit(0);
     } catch (error) {
