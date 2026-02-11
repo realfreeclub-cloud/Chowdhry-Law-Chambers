@@ -7,6 +7,8 @@ import BlogForm from "./BlogForm";
 import ClientLogosForm from "./ClientLogosForm";
 import MapForm from "./MapForm";
 import ContactForm from "./ContactForm";
+import AppointmentForm from "./AppointmentForm";
+import ContactInfoForm from "./ContactInfoForm";
 
 interface SectionEditorRegistryProps {
     type: string;
@@ -30,6 +32,10 @@ export default function SectionEditorRegistry({ type, content, onChange }: Secti
             return <MapForm content={content} onChange={onChange} />;
         case "CONTACT_DETAILED":
             return <ContactForm content={content} onChange={onChange} />;
+        case "CONTACT_INFO":
+            return <ContactInfoForm content={content} onChange={onChange} />;
+        case "APPOINTMENT":
+            return <AppointmentForm content={content} onChange={onChange} />;
         case "STATS":
             return <div className="text-sm text-gray-500 italic p-2">Stats are currently static or auto-calculated.</div>;
         case "HERO_SLIDER":

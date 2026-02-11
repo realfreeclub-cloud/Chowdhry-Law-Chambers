@@ -10,6 +10,8 @@ import BlogSection from "./BlogSection";
 import ClientLogos from "./ClientLogos";
 import MapSectionEditable from "./MapSectionEditable";
 import ContactDetailed from "./ContactDetailed";
+import AppointmentSection from "./AppointmentSection";
+import ContactInfoSection from "./ContactInfoSection";
 
 export default function SectionRenderer({ section, sliders, config }: { section: any, sliders?: any[], config?: any }) {
     // Parsing content if it's a string (back compatibility) or Object
@@ -38,6 +40,10 @@ export default function SectionRenderer({ section, sliders, config }: { section:
             return <MapSectionEditable data={content} />;
         case 'CONTACT_DETAILED':
             return <ContactDetailed data={content} config={config} />;
+        case 'CONTACT_INFO':
+            return <ContactInfoSection data={content} config={config} />;
+        case 'APPOINTMENT':
+            return <AppointmentSection data={content} />;
         default:
             return null;
     }
