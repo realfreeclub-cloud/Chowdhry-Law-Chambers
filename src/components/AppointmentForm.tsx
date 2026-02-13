@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { setHours, setMinutes, format } from "date-fns";
 import {
     Calendar, User, Mail, Phone, Briefcase, MessageSquare,
-    CheckCircle, ArrowRight, ArrowLeft, Loader2, Info, Clock
+    CheckCircle, ArrowRight, ArrowLeft, Loader2, Info, Clock, Sun, Moon
 } from "lucide-react";
 
 export default function AppointmentForm() {
@@ -288,39 +288,93 @@ export default function AppointmentForm() {
                                 <p className="text-slate-500">Pick a time slot that works best for you on {format(formData.date, 'MMMM d')}.</p>
                             </div>
 
-                            <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col">
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                                    {[
-                                        "09:00 AM", "10:00 AM", "11:00 AM",
-                                        "12:00 PM", "02:00 PM", "03:00 PM",
-                                        "04:00 PM", "05:00 PM", "06:00 PM"
-                                    ].map((time) => {
-                                        const [hourStr, minPart] = time.split(':');
-                                        const [minStr, ampm] = minPart.split(' ');
-                                        let hour = parseInt(hourStr);
-                                        if (ampm === "PM" && hour !== 12) hour += 12;
-                                        if (ampm === "AM" && hour === 12) hour = 0;
-                                        const minutes = parseInt(minStr);
+                            <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col space-y-10">
+                                {/* Morning Session */}
+                                <div>
+                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                                        <Sun className="w-3.5 h-3.5 text-amber-500" /> Morning
+                                    </h4>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                        {["09:00 AM", "10:00 AM", "11:00 AM"].map((time) => {
+                                            const isSelected = format(formData.date, 'p') === time;
+                                            return (
+                                                <button
+                                                    key={time}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const [hourStr, minPart] = time.split(':');
+                                                        const [minStr, ampm] = minPart.split(' ');
+                                                        let hour = parseInt(hourStr);
+                                                        if (ampm === "PM" && hour !== 12) hour += 12;
+                                                        if (ampm === "AM" && hour === 12) hour = 0;
+                                                        const minutes = parseInt(minStr);
+                                                        setFormData({ ...formData, date: setHours(setMinutes(new Date(formData.date), minutes), hour) });
+                                                    }}
+                                                    className={`p-3 rounded-xl text-[13px] font-bold transition-all duration-300 border-2 ${isSelected ? 'bg-[var(--secondary)] border-[var(--secondary)] text-white shadow-lg' : 'bg-slate-50 border-transparent text-slate-600 hover:border-slate-200'}`}
+                                                >
+                                                    {time}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
 
-                                        const slotDate = setHours(setMinutes(new Date(formData.date), minutes), hour);
-                                        const isSelected = format(formData.date, 'p') === time;
+                                {/* Afternoon Session */}
+                                <div>
+                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                                        <Sun className="w-3.5 h-3.5 text-[var(--secondary)]" /> Afternoon
+                                    </h4>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                        {["12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM"].map((time) => {
+                                            const isSelected = format(formData.date, 'p') === time;
+                                            return (
+                                                <button
+                                                    key={time}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const [hourStr, minPart] = time.split(':');
+                                                        const [minStr, ampm] = minPart.split(' ');
+                                                        let hour = parseInt(hourStr);
+                                                        if (ampm === "PM" && hour !== 12) hour += 12;
+                                                        if (ampm === "AM" && hour === 12) hour = 0;
+                                                        setFormData({ ...formData, date: setHours(setMinutes(new Date(formData.date), parseInt(minStr)), hour) });
+                                                    }}
+                                                    className={`p-3 rounded-xl text-[13px] font-bold transition-all duration-300 border-2 ${isSelected ? 'bg-[var(--secondary)] border-[var(--secondary)] text-white shadow-lg' : 'bg-slate-50 border-transparent text-slate-600 hover:border-slate-200'}`}
+                                                >
+                                                    {time}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
 
-                                        return (
-                                            <button
-                                                key={time}
-                                                type="button"
-                                                onClick={() => setFormData({ ...formData, date: slotDate })}
-                                                className={`
-                                                    p-4 rounded-2xl text-sm font-bold transition-all duration-300 border-2
-                                                    ${isSelected
-                                                        ? 'bg-[var(--secondary)] border-[var(--secondary)] text-white shadow-xl shadow-[var(--secondary)]/20 scale-105'
-                                                        : 'bg-slate-50 border-transparent text-slate-600 hover:border-slate-200 hover:bg-white'}
-                                                `}
-                                            >
-                                                {time}
-                                            </button>
-                                        );
-                                    })}
+                                {/* Evening Session */}
+                                <div>
+                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4 flex items-center gap-2">
+                                        <Moon className="w-3.5 h-3.5 text-indigo-500" /> Evening
+                                    </h4>
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                        {["04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM"].map((time) => {
+                                            const isSelected = format(formData.date, 'p') === time;
+                                            return (
+                                                <button
+                                                    key={time}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        const [hourStr, minPart] = time.split(':');
+                                                        const [minStr, ampm] = minPart.split(' ');
+                                                        let hour = parseInt(hourStr);
+                                                        if (ampm === "PM" && hour !== 12) hour += 12;
+                                                        if (ampm === "AM" && hour === 12) hour = 0;
+                                                        setFormData({ ...formData, date: setHours(setMinutes(new Date(formData.date), parseInt(minStr)), hour) });
+                                                    }}
+                                                    className={`p-3 rounded-xl text-[13px] font-bold transition-all duration-300 border-2 ${isSelected ? 'bg-[var(--secondary)] border-[var(--secondary)] text-white shadow-lg' : 'bg-slate-50 border-transparent text-slate-600 hover:border-slate-200'}`}
+                                                >
+                                                    {time}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
                                 </div>
 
                                 <div className="mt-8 p-6 bg-slate-900 text-white rounded-[2rem] shadow-xl relative overflow-hidden group">
