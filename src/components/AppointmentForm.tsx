@@ -31,11 +31,13 @@ export default function AppointmentForm() {
             .catch(console.error);
     }, []);
 
-    const handleNext = () => {
+    const handleNext = (e: React.MouseEvent) => {
+        e.preventDefault();
         if (step < 4) setStep(step + 1);
     };
 
-    const handleBack = () => {
+    const handleBack = (e: React.MouseEvent) => {
+        e.preventDefault();
         if (step > 1) setStep(step - 1);
     };
 
