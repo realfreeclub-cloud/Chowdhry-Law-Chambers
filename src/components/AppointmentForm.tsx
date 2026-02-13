@@ -32,7 +32,7 @@ export default function AppointmentForm() {
     }, []);
 
     const handleNext = () => {
-        if (step < 3) setStep(step + 1);
+        if (step < 4) setStep(step + 1);
     };
 
     const handleBack = () => {
@@ -42,6 +42,8 @@ export default function AppointmentForm() {
     const isStepValid = () => {
         if (step === 1) return formData.name && formData.email && formData.phone;
         if (step === 2) return formData.practiceArea;
+        if (step === 3) return !!formData.date;
+        if (step === 4) return !!formData.date; // Time is already part of date from step 3 or default
         return true;
     };
 
@@ -106,9 +108,10 @@ export default function AppointmentForm() {
     }
 
     const steps = [
-        { number: 1, title: "Your Details" },
-        { number: 2, title: "Case Info" },
-        { number: 3, title: "Date & Time" }
+        { number: 1, title: "Details" },
+        { number: 2, title: "Case" },
+        { number: 3, title: "Date" },
+        { number: 4, title: "Time" }
     ];
 
     return (
@@ -119,19 +122,19 @@ export default function AppointmentForm() {
                     {steps.map((s) => (
                         <div key={s.number} className="flex items-center">
                             <div className={`
-                                w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors duration-300
+                                w-8 h-8 rounded-full flex items-center justify-center text-[10px] font-bold transition-colors duration-300
                                 ${step >= s.number ? 'bg-[var(--secondary)] text-white' : 'bg-slate-200 text-slate-500'}
                             `}>
                                 {step > s.number ? <CheckCircle className="w-4 h-4" /> : s.number}
                             </div>
-                            {s.number !== 3 && <div className={`w-12 h-0.5 mx-2 transition-colors duration-300 ${step > s.number ? 'bg-[var(--secondary)]' : 'bg-slate-200'}`}></div>}
+                            {s.number !== 4 && <div className={`w-8 sm:w-12 h-0.5 mx-1 sm:mx-2 transition-colors duration-300 ${step > s.number ? 'bg-[var(--secondary)]' : 'bg-slate-200'}`}></div>}
                         </div>
                     ))}
                 </div>
-                <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">Step {step} of 3</span>
+                <span className="text-sm font-bold text-slate-400 uppercase tracking-wider">Step {step} of 4</span>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-8 md:p-10 min-h-[400px] flex flex-col">
+            <form onSubmit={handleSubmit} className="p-8 md:p-10 min-h-[450px] flex flex-col">
                 <AnimatePresence mode="wait">
                     {step === 1 && (
                         <motion.div
@@ -243,82 +246,97 @@ export default function AppointmentForm() {
                             className="flex-1 space-y-8"
                         >
                             <div className="text-center">
-                                <h3 className="text-3xl font-bold text-slate-900 mb-2 flex items-center justify-center gap-3">
-                                    <Calendar className="w-8 h-8 text-[var(--secondary)]" />
-                                    Choose Your Schedule
+                                <h3 className="text-2xl font-bold text-slate-900 mb-2 flex items-center justify-center gap-3">
+                                    <Calendar className="w-7 h-7 text-[var(--secondary)]" />
+                                    Choose Consultation Date
                                 </h3>
-                                <p className="text-slate-500">Select a date and time that works best for your consultation.</p>
+                                <p className="text-slate-500">Select an available date for your meeting.</p>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                {/* Calendar Sidebar */}
-                                <div className="bg-white p-4 sm:p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col items-center overflow-hidden">
-                                    <label className="block text-sm font-bold text-slate-700 mb-4 self-start">1. Select Date</label>
-                                    <div className="appointment-datepicker-inline w-full flex justify-center scale-95 sm:scale-100 origin-top">
-                                        <DatePicker
-                                            selected={formData.date}
-                                            onChange={(date: Date | null) => date && setFormData({ ...formData, date })}
-                                            inline
-                                            minDate={new Date()}
-                                            calendarClassName="premium-calendar"
-                                        />
-                                    </div>
+                            <div className="bg-white p-4 sm:p-8 rounded-3xl border border-slate-100 shadow-sm flex flex-col items-center">
+                                <div className="appointment-datepicker-inline w-full flex justify-center scale-110 sm:scale-125 my-8 origin-center">
+                                    <DatePicker
+                                        selected={formData.date}
+                                        onChange={(date: Date | null) => date && setFormData({ ...formData, date })}
+                                        inline
+                                        minDate={new Date()}
+                                        calendarClassName="premium-calendar"
+                                    />
                                 </div>
 
-                                {/* Time Selection */}
-                                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col">
-                                    <label className="block text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
-                                        <Clock className="w-4 h-4 text-[var(--secondary)]" />
-                                        2. Select Time Slot
-                                    </label>
-                                    <div className="grid grid-cols-3 gap-3">
-                                        {[
-                                            "09:00 AM", "10:00 AM", "11:00 AM",
-                                            "12:00 PM", "02:00 PM", "03:00 PM",
-                                            "04:00 PM", "05:00 PM", "06:00 PM"
-                                        ].map((time) => {
-                                            const [hourStr, minPart] = time.split(':');
-                                            const [minStr, ampm] = minPart.split(' ');
-                                            let hour = parseInt(hourStr);
-                                            if (ampm === "PM" && hour !== 12) hour += 12;
-                                            if (ampm === "AM" && hour === 12) hour = 0;
-                                            const minutes = parseInt(minStr);
+                                <div className="mt-4 p-4 bg-[var(--secondary)]/5 rounded-2xl flex items-center gap-3 border border-[var(--secondary)]/10">
+                                    <Calendar className="w-5 h-5 text-[var(--secondary)]" />
+                                    <span className="font-bold text-slate-900">Selected: {format(formData.date, 'MMMM d, yyyy')}</span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
 
-                                            const slotDate = setHours(setMinutes(new Date(formData.date), minutes), hour);
-                                            const isSelected = format(formData.date, 'p') === time;
+                    {step === 4 && (
+                        <motion.div
+                            key="step4"
+                            initial={{ x: 20, opacity: 0 }}
+                            animate={{ x: 0, opacity: 1 }}
+                            exit={{ x: -20, opacity: 0 }}
+                            className="flex-1 space-y-8"
+                        >
+                            <div className="text-center">
+                                <h3 className="text-2xl font-bold text-slate-900 mb-2 flex items-center justify-center gap-3">
+                                    <Clock className="w-7 h-7 text-[var(--secondary)]" />
+                                    Select Appointment Time
+                                </h3>
+                                <p className="text-slate-500">Pick a time slot that works best for you on {format(formData.date, 'MMMM d')}.</p>
+                            </div>
 
-                                            return (
-                                                <button
-                                                    key={time}
-                                                    type="button"
-                                                    onClick={() => setFormData({ ...formData, date: slotDate })}
-                                                    className={`
-                                                        p-2.5 rounded-xl text-[13px] font-bold transition-all duration-300 border-2
-                                                        ${isSelected
-                                                            ? 'bg-[var(--secondary)] border-[var(--secondary)] text-white shadow-lg shadow-[var(--secondary)]/20 scale-105'
-                                                            : 'bg-slate-50 border-transparent text-slate-600 hover:border-slate-200 hover:bg-white'}
-                                                    `}
-                                                >
-                                                    {time}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
+                            <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col">
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    {[
+                                        "09:00 AM", "10:00 AM", "11:00 AM",
+                                        "12:00 PM", "02:00 PM", "03:00 PM",
+                                        "04:00 PM", "05:00 PM", "06:00 PM"
+                                    ].map((time) => {
+                                        const [hourStr, minPart] = time.split(':');
+                                        const [minStr, ampm] = minPart.split(' ');
+                                        let hour = parseInt(hourStr);
+                                        if (ampm === "PM" && hour !== 12) hour += 12;
+                                        if (ampm === "AM" && hour === 12) hour = 0;
+                                        const minutes = parseInt(minStr);
 
-                                    <div className="mt-auto pt-8">
-                                        <div className="p-4 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                                            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Selected Schedule</h4>
-                                            <div className="flex flex-wrap items-center gap-y-2 gap-x-3 text-slate-900 font-bold leading-tight">
-                                                <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">
-                                                    <Calendar className="w-4 h-4 text-[var(--secondary)]" />
-                                                    <span className="text-sm">{format(formData.date, 'MMMM d, yyyy')}</span>
-                                                </div>
-                                                <span className="text-slate-300 hidden sm:inline">at</span>
-                                                <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">
-                                                    <Clock className="w-4 h-4 text-[var(--secondary)]" />
-                                                    <span className="text-sm">{format(formData.date, 'h:mm aa')}</span>
-                                                </div>
+                                        const slotDate = setHours(setMinutes(new Date(formData.date), minutes), hour);
+                                        const isSelected = format(formData.date, 'p') === time;
+
+                                        return (
+                                            <button
+                                                key={time}
+                                                type="button"
+                                                onClick={() => setFormData({ ...formData, date: slotDate })}
+                                                className={`
+                                                    p-4 rounded-2xl text-sm font-bold transition-all duration-300 border-2
+                                                    ${isSelected
+                                                        ? 'bg-[var(--secondary)] border-[var(--secondary)] text-white shadow-xl shadow-[var(--secondary)]/20 scale-105'
+                                                        : 'bg-slate-50 border-transparent text-slate-600 hover:border-slate-200 hover:bg-white'}
+                                                `}
+                                            >
+                                                {time}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+
+                                <div className="mt-8 p-6 bg-slate-900 text-white rounded-[2rem] shadow-xl relative overflow-hidden group">
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--secondary)]/10 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-[var(--secondary)]/20 transition-colors"></div>
+                                    <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                        <div>
+                                            <p className="text-[10px] font-bold text-[var(--secondary)] uppercase tracking-[0.2em] mb-1">Final Schedule Review</p>
+                                            <div className="flex items-center gap-3">
+                                                <Calendar className="w-5 h-5 text-[var(--secondary)]" />
+                                                <span className="text-lg font-bold">{format(formData.date, 'MMMM d, yyyy')}</span>
                                             </div>
+                                        </div>
+                                        <div className="h-12 w-px bg-white/10 hidden sm:block"></div>
+                                        <div className="flex items-center gap-3">
+                                            <Clock className="w-5 h-5 text-[var(--secondary)]" />
+                                            <span className="text-2xl font-bold tracking-tight">{format(formData.date, 'h:mm aa')}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -329,7 +347,7 @@ export default function AppointmentForm() {
                                     <Info className="w-5 h-5 text-blue-600 flex-shrink-0" />
                                 </div>
                                 <p className="text-sm text-blue-800 leading-relaxed">
-                                    <span className="font-bold">Important:</span> This is a preferred time request. We will contact you shortly to confirm the exact availability of our legal team for this slot.
+                                    <span className="font-bold">Note:</span> This is a preferred time request. Our team will verify and confirm this slot via email or phone.
                                 </p>
                             </div>
                         </motion.div>
@@ -375,7 +393,7 @@ export default function AppointmentForm() {
                         <div></div> // Spacer
                     )}
 
-                    {step < 3 ? (
+                    {step < 4 ? (
                         <button
                             type="button"
                             onClick={handleNext}
