@@ -13,6 +13,7 @@ import {
 export default function AppointmentForm() {
     const [step, setStep] = useState(1);
     const [practiceAreas, setPracticeAreas] = useState<any[]>([]);
+    const [team, setTeam] = useState<any[]>([]);
     const [submitted, setSubmitted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -20,15 +21,27 @@ export default function AppointmentForm() {
         email: "",
         phone: "",
         practiceArea: "",
+        teamMember: "",
         date: setHours(setMinutes(new Date(), 30), 9), // Default to 9:30 AM today
         message: "",
     });
 
     useEffect(() => {
-        fetch("/api/practice-areas")
-            .then(res => res.json())
-            .then(data => setPracticeAreas(data))
-            .catch(console.error);
+        const fetchData = async () => {
+            try {
+                const [areasRes, teamRes] = await Promise.all([
+                    fetch("/api/practice-areas"),
+                    fetch("/api/team")
+                ]);
+                const areas = await areasRes.json();
+                const teamData = await teamRes.json();
+                setPracticeAreas(areas);
+                setTeam(teamData);
+            } catch (error) {
+                console.error("Failed to fetch data:", error);
+            }
+        };
+        fetchData();
     }, []);
 
     const handleNext = (e: React.MouseEvent) => {
@@ -65,7 +78,7 @@ export default function AppointmentForm() {
             if (res.ok) {
                 setSubmitted(true);
                 setFormData({
-                    name: "", email: "", phone: "", practiceArea: "",
+                    name: "", email: "", phone: "", practiceArea: "", teamMember: "",
                     date: setHours(setMinutes(new Date(), 30), 9),
                     message: ""
                 });
@@ -230,14 +243,52 @@ export default function AppointmentForm() {
                                     </select>
                                 </div>
                                 <div>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Preferred Attorney (Optional)</label>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-48 overflow-y-auto custom-scrollbar pr-1">
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormData({ ...formData, teamMember: "" })}
+                                            className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 ${formData.teamMember === "" ? 'border-[var(--secondary)] bg-[var(--secondary)]/5 ring-1 ring-[var(--secondary)]' : 'border-slate-200 hover:border-slate-300'}`}
+                                        >
+                                            <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                                                <User className="w-5 h-5 text-slate-400" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-bold text-slate-900">No Preference</p>
+                                                <p className="text-xs text-slate-500">Available Attorney</p>
+                                            </div>
+                                        </button>
+                                        {team.map(member => (
+                                            <button
+                                                key={member._id}
+                                                type="button"
+                                                onClick={() => setFormData({ ...formData, teamMember: member.fullName })}
+                                                className={`p-3 rounded-xl border text-left transition-all flex items-center gap-3 ${formData.teamMember === member.fullName ? 'border-[var(--secondary)] bg-[var(--secondary)]/5 ring-1 ring-[var(--secondary)]' : 'border-slate-200 hover:border-slate-300'}`}
+                                            >
+                                                {member.imageUrl ? (
+                                                    <img src={member.imageUrl} alt={member.fullName} className="w-10 h-10 rounded-full object-cover" />
+                                                ) : (
+                                                    <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                                                        <span className="text-sm font-bold text-slate-500">{member.fullName.charAt(0)}</span>
+                                                    </div>
+                                                )}
+                                                <div className="min-w-0">
+                                                    <p className="text-sm font-bold text-slate-900 truncate">{member.fullName}</p>
+                                                    <p className="text-xs text-slate-500 truncate">{member.role}</p>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div>
                                     <label className="block text-sm font-medium text-slate-700 mb-1.5">Brief Message (Optional)</label>
                                     <div className="relative">
                                         <MessageSquare className="absolute left-3.5 top-3.5 w-5 h-5 text-slate-400" />
                                         <textarea
                                             value={formData.message}
                                             onChange={e => setFormData({ ...formData, message: e.target.value })}
-                                            className="w-full pl-11 p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[var(--secondary)] focus:border-transparent transition-all outline-none h-32 resize-none"
-                                            placeholder="Please briefly describe your legal situation so we can prepare for the consultation..."
+                                            className="w-full pl-11 p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[var(--secondary)] focus:border-transparent transition-all outline-none h-24 resize-none"
+                                            placeholder="Please briefly describe your legal situation..."
                                         />
                                     </div>
                                 </div>

@@ -79,6 +79,7 @@ export const schemas = {
         email: (value: string) => validators.email(value),
         phone: (value: string) => validators.phone(value),
         practiceArea: (value: string) => value === undefined || value === null || validators.stringLength(value, 0, 100),
+        teamMember: (value: string) => value === undefined || value === null || validators.stringLength(value, 0, 100),
         date: (value: any) => value !== undefined && value !== null, // Should be a valid date string or object
         message: (value: string) => value === undefined || value === null || validators.stringLength(value, 0, 1000),
     },

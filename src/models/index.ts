@@ -109,6 +109,7 @@ export interface IAppointment extends Document {
     email: string;
     phone: string;
     practiceArea?: string;
+    teamMember?: string; // New field
     date: Date;
     message?: string;
     status: 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled';
@@ -292,6 +293,7 @@ const AppointmentSchema = new Schema<IAppointment>({
     email: { type: String, required: true },
     phone: { type: String, required: true },
     practiceArea: { type: String },
+    teamMember: { type: String },
     date: { type: Date, required: true },
     message: { type: String },
     status: { type: String, enum: ['Pending', 'Confirmed', 'Completed', 'Cancelled'], default: 'Pending' },
