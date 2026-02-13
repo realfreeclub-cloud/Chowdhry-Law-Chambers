@@ -15,7 +15,7 @@ export default function MapSectionEditable({ data }: MapSectionProps) {
     const label = data?.label || "Visit Us";
     const title = data?.title || "Our Location";
     const description = data?.description || "We are conveniently located in the heart of the city. Visit our offices for a consultation or contact us to schedule an appointment.";
-    const mapUrl = data?.mapUrl || "";
+    const mapUrl = data?.mapUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.031119690018!2d77.2329824!3d28.628829399999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd2c4152b10d%3A0xa4881b34e1c4749d!2s20%2C%20Todarmal%20Rd%2C%20Bengali%20Market%2C%20Todermal%20Road%20Area%2C%20Mandi%20House%2C%20New%20Delhi%2C%20Delhi%20110001!5e0!3m2!1sen!2sin!4v1771009745181!5m2!1sen!2sin";
     const buttonText = data?.buttonText || "Get Directions";
     const buttonLink = data?.buttonLink || "/contact";
 

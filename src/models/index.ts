@@ -186,7 +186,7 @@ export interface IBlogPost extends Document {
 // --- Schemas ---
 
 const SiteConfigSchema = new Schema<ISiteConfig>({
-    name: { type: String, default: 'Justice League Partners' },
+    name: { type: String, default: 'Chowdhry Law Chambers' },
     theme: {
         mode: { type: String, enum: ['light', 'dark', 'system'], default: 'light' },
         preset: { type: String, enum: ['default', 'classic', 'corporate'], default: 'corporate' },
@@ -200,11 +200,11 @@ const SiteConfigSchema = new Schema<ISiteConfig>({
         borderRadius: { type: String, default: '0.5rem' },
     },
     contact: {
-        email: { type: String, default: 'info@firm.com' },
-        phone: { type: String, default: '(555) 123-4567' },
-        address: { type: String, default: '123 Law St, NY' },
-        mapUrl: { type: String },
-        showMapOnHome: { type: Boolean, default: false },
+        email: { type: String, default: 'office@chowdhrylaw.com' },
+        phone: { type: String, default: '+91 98111 25450' },
+        address: { type: String, default: '20, Todarmal Rd, Bengali Market, New Delhi - 110001' },
+        mapUrl: { type: String, default: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.031119690018!2d77.2329824!3d28.628829399999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd2c4152b10d%3A0xa4881b34e1c4749d!2s20%2C%20Todarmal%20Rd%2C%20Bengali%20Market%2C%20Todermal%20Road%20Area%2C%20Mandi%20House%2C%20New%20Delhi%2C%20Delhi%20110001!5e0!3m2!1sen!2sin!4v1771009745181!5m2!1sen!2sin' },
+        showMapOnHome: { type: Boolean, default: true },
     },
     socialMedia: {
         facebook: { type: String },
