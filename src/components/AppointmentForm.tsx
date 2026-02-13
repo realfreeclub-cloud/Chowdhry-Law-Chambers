@@ -43,7 +43,7 @@ export default function AppointmentForm() {
         if (step === 1) return formData.name && formData.email && formData.phone;
         if (step === 2) return formData.practiceArea;
         if (step === 3) return !!formData.date;
-        if (step === 4) return !!formData.date; // Time is already part of date from step 3 or default
+        if (step === 4) return !!formData.date;
         return true;
     };
 
@@ -291,7 +291,7 @@ export default function AppointmentForm() {
                                     <Clock className="w-7 h-7 text-[var(--secondary)]" />
                                     Select Appointment Time
                                 </h3>
-                                <p className="text-slate-500">Pick a time slot that works best for you on {format(formData.date, 'MMMM d')}.</p>
+                                <p className="text-slate-500">Pick a time slot for {format(formData.date, 'MMMM d, yyyy')}</p>
                             </div>
 
                             <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col space-y-10">
