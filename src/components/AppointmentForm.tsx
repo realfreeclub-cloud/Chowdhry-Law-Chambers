@@ -180,9 +180,15 @@ export default function AppointmentForm() {
                                         <div className="relative">
                                             <Phone className="absolute left-3.5 top-3.5 w-5 h-5 text-slate-400" />
                                             <input
-                                                type="tel"
+                                                type="text"
                                                 value={formData.phone}
-                                                onChange={e => setFormData({ ...formData, phone: e.target.value })}
+                                                onChange={e => {
+                                                    const val = e.target.value;
+                                                    // Allow numbers, spaces, plus, minus, and parentheses
+                                                    if (val === "" || /^[\d\s\-\+\(\)]+$/.test(val)) {
+                                                        setFormData({ ...formData, phone: val });
+                                                    }
+                                                }}
                                                 className="w-full pl-11 p-3.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[var(--secondary)] focus:border-transparent transition-all outline-none"
                                                 placeholder="+91 98765 43210"
                                                 required
