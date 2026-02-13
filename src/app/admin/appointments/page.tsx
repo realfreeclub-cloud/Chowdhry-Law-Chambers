@@ -61,9 +61,9 @@ export default function AppointmentsAdmin() {
                                 <div className="flex items-center gap-3 mb-3">
                                     <h3 className="text-xl font-bold text-slate-900">{appt.name}</h3>
                                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${appt.status === 'Confirmed' ? 'bg-green-100 text-green-700' :
-                                            appt.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
-                                                appt.status === 'Completed' ? 'bg-blue-100 text-blue-700' :
-                                                    'bg-yellow-100 text-yellow-700'
+                                        appt.status === 'Cancelled' ? 'bg-red-100 text-red-700' :
+                                            appt.status === 'Completed' ? 'bg-blue-100 text-blue-700' :
+                                                'bg-yellow-100 text-yellow-700'
                                         }`}>
                                         {appt.status}
                                     </span>
@@ -86,6 +86,12 @@ export default function AppointmentsAdmin() {
                                         <div className="flex items-center">
                                             <Briefcase className="w-4 h-4 mr-2 text-slate-400" />
                                             {appt.practiceArea}
+                                        </div>
+                                    )}
+                                    {appt.teamMember && (
+                                        <div className="flex items-center text-indigo-600 font-medium my-1 col-span-2">
+                                            <User className="w-4 h-4 mr-2" />
+                                            Preferred Attorney: {appt.teamMember}
                                         </div>
                                     )}
                                 </div>
