@@ -110,6 +110,28 @@ export default function ContactForm({ content, onChange }: ContactFormProps) {
                         placeholder="Our firm operates through multiple strategic locations..."
                     />
                 </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label className="block text-xs font-medium text-slate-700 mb-1">Main Map Embed URL</label>
+                        <input
+                            type="text"
+                            value={content.mapUrl || ""}
+                            onChange={(e) => handleChange("mapUrl", e.target.value)}
+                            className="w-full p-2 border border-slate-300 rounded text-sm font-mono"
+                            placeholder="https://www.google.com/maps/embed?pb=..."
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-xs font-medium text-slate-700 mb-1">Get Directions Link</label>
+                        <input
+                            type="text"
+                            value={content.directionsLink || ""}
+                            onChange={(e) => handleChange("directionsLink", e.target.value)}
+                            className="w-full p-2 border border-slate-300 rounded text-sm"
+                            placeholder="https://maps.app.goo.gl/..."
+                        />
+                    </div>
+                </div>
             </div>
 
             {/* Locations */}

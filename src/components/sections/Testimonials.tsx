@@ -5,7 +5,9 @@ import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
 
 export default function Testimonials({ data }: { data: any }) {
     const [currentIndex, setCurrentIndex] = useState(0);
-    const items = data.items || [];
+    const items = data?.items || [];
+    const title = data?.title || "What Our Clients Say";
+    const subtitle = data?.subtitle || "Testimonials";
 
     const nextSlide = () => {
         setCurrentIndex((prev) => (prev + 1) % items.length);
@@ -26,10 +28,10 @@ export default function Testimonials({ data }: { data: any }) {
             <div className="container mx-auto px-4 relative z-10">
                 <div className="text-center mb-16">
                     <span className="text-[var(--secondary)] font-bold tracking-[0.2em] text-xs uppercase block mb-4">
-                        Testimonials
+                        {subtitle}
                     </span>
                     <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-6">
-                        What Our Clients Say
+                        {title}
                     </h2>
                     <div className="w-20 h-1 bg-[var(--secondary)] mx-auto"></div>
                 </div>

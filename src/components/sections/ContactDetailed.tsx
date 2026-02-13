@@ -37,7 +37,8 @@ export default function ContactDetailed({ data, config }: ContactDetailedProps) 
         }
     ];
 
-    const mapUrl = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.031119690018!2d77.2329824!3d28.628829399999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd2c4152b10d%3A0xa4881b34e1c4749d!2s20%2C%20Todarmal%20Rd%2C%20Bengali%20Market%2C%20Todermal%20Road%20Area%2C%20Mandi%20House%2C%20New%20Delhi%2C%20Delhi%20110001!5e0!3m2!1sen!2sin!4v1771009745181!5m2!1sen!2sin";
+    const mapUrl = data?.mapUrl || config?.contact?.mapUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3502.031119690018!2d77.2329824!3d28.628829399999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd2c4152b10d%3A0xa4881b34e1c4749d!2s20%2C%20Todarmal%20Rd%2C%20Bengali%20Market%2C%20Todermal%20Road%20Area%2C%20Mandi%20House%2C%20New%20Delhi%2C%20Delhi%20110001!5e0!3m2!1sen!2sin!4v1771009745181!5m2!1sen!2sin";
+    const directionsLink = data?.directionsLink || "https://maps.app.goo.gl/YourMapID";
 
     const faqs = data?.faqs || [
         {
@@ -143,7 +144,7 @@ export default function ContactDetailed({ data, config }: ContactDetailedProps) 
                                     <h4 className="font-bold text-slate-900">Principal Office</h4>
                                     <p className="text-sm text-slate-600">20, Todarmal Rd, Bengali Market</p>
                                 </div>
-                                <a href="https://maps.app.goo.gl/YourMapID" target="_blank" className="bg-[var(--secondary)] text-white px-6 py-2 rounded-xl text-sm font-bold shadow-lg shadow-[var(--secondary)]/20 hover:scale-105 transition-transform">
+                                <a href={directionsLink} target="_blank" className="bg-[var(--secondary)] text-white px-6 py-2 rounded-xl text-sm font-bold shadow-lg shadow-[var(--secondary)]/20 hover:scale-105 transition-transform">
                                     Get Directions
                                 </a>
                             </div>

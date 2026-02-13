@@ -10,6 +10,10 @@ interface TestimonialsFormProps {
 export default function TestimonialsForm({ content, onChange }: TestimonialsFormProps) {
     const items = content.items || [];
 
+    const handleChange = (field: string, value: any) => {
+        onChange({ ...content, [field]: value });
+    };
+
     const handleItemChange = (index: number, field: string, value: string) => {
         const newItems = [...items];
         newItems[index] = { ...newItems[index], [field]: value };
@@ -29,7 +33,30 @@ export default function TestimonialsForm({ content, onChange }: TestimonialsForm
     };
 
     return (
-        <div className="space-y-4">
+        <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Section Title</label>
+                    <input
+                        type="text"
+                        value={content.title || ""}
+                        onChange={(e) => handleChange("title", e.target.value)}
+                        className="w-full p-2 border border-slate-300 rounded text-sm"
+                        placeholder="What Our Clients Say"
+                    />
+                </div>
+                <div>
+                    <label className="block text-xs font-bold text-slate-700 uppercase mb-1">Section Subtitle</label>
+                    <input
+                        type="text"
+                        value={content.subtitle || ""}
+                        onChange={(e) => handleChange("subtitle", e.target.value)}
+                        className="w-full p-2 border border-slate-300 rounded text-sm"
+                        placeholder="Testimonials"
+                    />
+                </div>
+            </div>
+
             <label className="block text-xs font-bold text-slate-700 uppercase">Client Reviews</label>
 
             {items.map((item: any, idx: number) => (

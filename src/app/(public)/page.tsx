@@ -23,6 +23,8 @@ export default async function HomePage() {
   }
 
   const sections = page.sections || [];
+  const hasClientLogos = sections.some((s: any) => s.type === 'CLIENT_LOGOS');
+  const hasMap = sections.some((s: any) => s.type === 'MAP');
 
   return (
     <main>
@@ -30,12 +32,14 @@ export default async function HomePage() {
         <SectionRenderer key={idx} section={section} sliders={JSON.parse(JSON.stringify(sliders))} config={JSON.parse(JSON.stringify(config))} />
       ))}
 
-      <ClientLogos
-        title={config?.clientsSection?.title}
-        subtitle={config?.clientsSection?.subtitle}
-      />
+      {!hasClientLogos && (
+        <ClientLogos
+          title={config?.clientsSection?.title}
+          subtitle={config?.clientsSection?.subtitle}
+        />
+      )}
 
-      {config?.contact?.showMapOnHome && config?.contact?.mapUrl && (
+      {!hasMap && config?.contact?.showMapOnHome && config?.contact?.mapUrl && (
         <MapSection mapUrl={config.contact.mapUrl} />
       )}
     </main>
