@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { setHours, setMinutes, format } from "date-fns";
 import {
     Calendar, User, Mail, Phone, Briefcase, MessageSquare,
-    CheckCircle, ArrowRight, ArrowLeft, Loader2, Info
+    CheckCircle, ArrowRight, ArrowLeft, Loader2, Info, Clock
 } from "lucide-react";
 
 export default function AppointmentForm() {
