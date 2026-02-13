@@ -56,6 +56,8 @@ export default function AppointmentForm() {
                 body: JSON.stringify(formData),
             });
 
+            const result = await res.json();
+
             if (res.ok) {
                 setSubmitted(true);
                 setFormData({
@@ -65,10 +67,12 @@ export default function AppointmentForm() {
                 });
                 setStep(1);
             } else {
-                alert("Failed to submit. Please try again.");
+                console.error("Submission error:", result);
+                alert(`Submission Failed: ${result.error || "Please try again"}. ${result.details?.join(", ") || ""}`);
             }
-        } catch {
-            alert("Error submitting appointment.");
+        } catch (err) {
+            console.error("Fetch error:", err);
+            alert("Connection Error: Failed to reach the server. Please check your internet connection.");
         } finally {
             setLoading(false);
         }
@@ -246,11 +250,11 @@ export default function AppointmentForm() {
                                 <p className="text-slate-500">Select a date and time that works best for your consultation.</p>
                             </div>
 
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 {/* Calendar Sidebar */}
-                                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col items-center">
+                                <div className="bg-white p-4 sm:p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col items-center overflow-hidden">
                                     <label className="block text-sm font-bold text-slate-700 mb-4 self-start">1. Select Date</label>
-                                    <div className="appointment-datepicker-inline w-full flex justify-center">
+                                    <div className="appointment-datepicker-inline w-full flex justify-center scale-95 sm:scale-100 origin-top">
                                         <DatePicker
                                             selected={formData.date}
                                             onChange={(date: Date | null) => date && setFormData({ ...formData, date })}
@@ -262,7 +266,7 @@ export default function AppointmentForm() {
                                 </div>
 
                                 {/* Time Selection */}
-                                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                                <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex flex-col">
                                     <label className="block text-sm font-bold text-slate-700 mb-4 flex items-center gap-2">
                                         <Clock className="w-4 h-4 text-[var(--secondary)]" />
                                         2. Select Time Slot
@@ -289,7 +293,7 @@ export default function AppointmentForm() {
                                                     type="button"
                                                     onClick={() => setFormData({ ...formData, date: slotDate })}
                                                     className={`
-                                                        p-3 rounded-xl text-sm font-bold transition-all duration-300 border-2
+                                                        p-2.5 rounded-xl text-[13px] font-bold transition-all duration-300 border-2
                                                         ${isSelected
                                                             ? 'bg-[var(--secondary)] border-[var(--secondary)] text-white shadow-lg shadow-[var(--secondary)]/20 scale-105'
                                                             : 'bg-slate-50 border-transparent text-slate-600 hover:border-slate-200 hover:bg-white'}
@@ -301,14 +305,20 @@ export default function AppointmentForm() {
                                         })}
                                     </div>
 
-                                    <div className="mt-8 p-4 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                                        <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Selected Schedule</h4>
-                                        <div className="flex items-center gap-2 text-slate-900 font-bold">
-                                            <Calendar className="w-4 h-4 text-[var(--secondary)]" />
-                                            {format(formData.date, 'MMMM d, yyyy')}
-                                            <span className="mx-1 text-slate-300">at</span>
-                                            <Clock className="w-4 h-4 text-[var(--secondary)]" />
-                                            {format(formData.date, 'h:mm aa')}
+                                    <div className="mt-auto pt-8">
+                                        <div className="p-4 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                                            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3">Selected Schedule</h4>
+                                            <div className="flex flex-wrap items-center gap-y-2 gap-x-3 text-slate-900 font-bold leading-tight">
+                                                <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">
+                                                    <Calendar className="w-4 h-4 text-[var(--secondary)]" />
+                                                    <span className="text-sm">{format(formData.date, 'MMMM d, yyyy')}</span>
+                                                </div>
+                                                <span className="text-slate-300 hidden sm:inline">at</span>
+                                                <div className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-100 shadow-sm">
+                                                    <Clock className="w-4 h-4 text-[var(--secondary)]" />
+                                                    <span className="text-sm">{format(formData.date, 'h:mm aa')}</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
